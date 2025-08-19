@@ -1,9 +1,13 @@
 
+using AutoMapper;
+using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using TooliRentAPI.Data;
+using TooliRentClassLibrary.Mapper;
 using TooliRentClassLibrary.Models;
+using TooliRentClassLibrary.Validators;
 
 namespace TooliRentAPI
 {
@@ -19,6 +23,14 @@ namespace TooliRentAPI
             builder.Services.AddDbContext<TooliRentDBContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddAutoMapper(cfg =>
+            {
+                // optional: additional configuration here
+            }, typeof(MappingProfile).Assembly);
+          
+            // Add FluentValidation 
+            builder.Services.AddValidatorsFromAssemblyContaining<BookingRequestDtoValidator>();
+            
             // Add Identity services
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<TooliRentDBContext>()
@@ -28,7 +40,7 @@ namespace TooliRentAPI
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
-            var app = builder.Build();
+            var app = builder.Build();      
 
             // Seed users/roles 
             using (var scope = app.Services.CreateScope())
