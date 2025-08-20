@@ -1,6 +1,9 @@
-﻿namespace TooliRentAPI.Services
+﻿using TooliRentAPI.Services.Interfaces;
+
+namespace TooliRentAPI.Services
 {
-    public class JwtService
+    public class JwtService : IJwt
     {
+
     }
 }

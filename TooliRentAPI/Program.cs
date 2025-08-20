@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using TooliRentAPI.Data;
+using TooliRentAPI.Services;
+using TooliRentAPI.Services.Interfaces;
 using TooliRentClassLibrary.Mapper;
 using TooliRentClassLibrary.Models;
 using TooliRentClassLibrary.Validators;
@@ -19,7 +21,7 @@ namespace TooliRentAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
-
+            builder.Services.AddScoped<IJwt, JwtService>();
             //Get ConnectionString for db
             builder.Services.AddDbContext<TooliRentDBContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
