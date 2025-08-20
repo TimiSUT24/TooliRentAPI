@@ -11,10 +11,11 @@ namespace TooliRentAPI.Services
         private readonly IConfiguration _configuration;
         public JwtService(IConfiguration configuration)
         {
-            _configuration = configuration;
+            _configuration = configuration; //access to appsettings.json 
         }
         public string GenerateToken(string userId, IList<string> roles)
         {
+            // Information about the user in the token 
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, userId),
@@ -22,11 +23,14 @@ namespace TooliRentAPI.Services
                 new Claim(ClaimTypes.Email, userId!)
             };
 
+            //Add roles to the claims 
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
+            // Creates a security key from the secret key in appsettings.json
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256); // HMAC SHA256 algorithm for signing the token
 
+            //Create token object 
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:Issuer"],
                 audience: _configuration["JWT:Audience"],
