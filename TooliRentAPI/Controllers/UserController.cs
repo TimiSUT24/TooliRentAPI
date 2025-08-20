@@ -1,6 +1,11 @@
-﻿namespace TooliRentAPI.Controllers
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace TooliRentAPI.Controllers
 {
-    public class UserController
+    [Route("api/[controller]")]
+    [ApiController]
+    public class UserController : ControllerBase
     {
     }
 }
