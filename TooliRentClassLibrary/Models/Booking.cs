@@ -12,7 +12,7 @@ namespace TooliRentClassLibrary.Models
         public string UserId { get; set; } = null!; // Foreign key to ApplicationUser
         public ApplicationUser User { get; set; } = null!; // Navigation property to ApplicationUser
 
-        public int TooldId { get; set; } // Foreign key to Tool
+        public int ToolId { get; set; } // Foreign key to Tool
         public Tool Tool { get; set; } = null!; // Navigation property to Tool
 
         public DateTime StartDate { get; set; }

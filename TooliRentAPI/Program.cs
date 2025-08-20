@@ -1,6 +1,7 @@
 
 using AutoMapper;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -29,8 +30,9 @@ namespace TooliRentAPI
             }, typeof(MappingProfile).Assembly);
           
             // Add FluentValidation 
-            builder.Services.AddValidatorsFromAssemblyContaining<BookingRequestDtoValidator>();
-            
+            builder.Services.AddValidatorsFromAssemblyContaining<BookingRequestDtoValidator>();            
+            builder.Services.AddFluentValidationAutoValidation();
+
             // Add Identity services
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<TooliRentDBContext>()
@@ -48,8 +50,10 @@ namespace TooliRentAPI
                 var services = scope.ServiceProvider; 
                 var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                 var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                var DbContext = services.GetRequiredService<TooliRentDBContext>();
 
-                await UserRoleSeed.SeedAsync(userManager, roleManager); 
+                await UserRoleSeed.SeedAsync(userManager, roleManager);
+                await Tool_Booking_CategorySeed.ToolAndBookingAndCategorySeed(DbContext, userManager);
             }
 
                 // Configure the HTTP request pipeline.
