@@ -27,7 +27,7 @@ namespace TooliRentAPI.Services
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
             // Creates a security key from the secret key in appsettings.json
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256); // HMAC SHA256 algorithm for signing the token
 
             //Create token object 
@@ -35,7 +35,7 @@ namespace TooliRentAPI.Services
                 issuer: _configuration["JWT:Issuer"],
                 audience: _configuration["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(double.Parse(_configuration["JWT:ExpireInMinutes"])),
+                expires: DateTime.Now.AddMinutes(double.Parse(_configuration["JWT:ExpireInMinutes"]!)),
                 signingCredentials: creds
             );
 

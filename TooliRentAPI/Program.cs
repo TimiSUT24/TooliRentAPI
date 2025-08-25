@@ -5,6 +5,8 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Scalar.AspNetCore;
 using System.Threading.Tasks;
 using TooliRentAPI.Data;
 using TooliRentAPI.Services;
@@ -43,6 +45,7 @@ namespace TooliRentAPI
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<TooliRentDBContext>()
                 .AddDefaultTokenProviders();
+           
 
             //Jwt Authentication 
             builder.Services.AddAuthentication(options =>
@@ -61,15 +64,15 @@ namespace TooliRentAPI
                         ValidIssuer = builder.Configuration["JWT:Issuer"],
                         ValidAudience = builder.Configuration["JWT:Audience"],
                         IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
-                            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
+                            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!))
                     };
                 });
-
+            
             builder.Services.AddAuthorization(); 
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            builder.Services.AddOpenApi(options => options.AddDocumentTransformer(new BearerSecuritySchemeTransformer()));
 
             var app = builder.Build();      
 
@@ -89,10 +92,11 @@ namespace TooliRentAPI
                 if (app.Environment.IsDevelopment())
                 {
                     app.MapOpenApi();
+                    app.MapScalarApiReference();              
                 }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
