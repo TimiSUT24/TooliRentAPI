@@ -2,7 +2,7 @@
 
 namespace TooliRentAPI.Repositories.Interfaces
 {
-    public interface IToolRepository : IGenericRepository<Tool>
+    public interface IUserRepository : IGenericRepository<ApplicationUser>
     {
     }
 }

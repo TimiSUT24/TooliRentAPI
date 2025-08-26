@@ -1,6 +1,8 @@
-﻿namespace TooliRentAPI.Repositories.Interfaces
+﻿using TooliRentClassLibrary.Models;
+
+namespace TooliRentAPI.Repositories.Interfaces
 {
-    public interface IBookingRepository
+    public interface IBookingRepository : IGenericRepository<Booking>
     {
     }
 }
