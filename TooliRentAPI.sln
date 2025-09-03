@@ -3,21 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35931.197
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TooliRent.API", "TooliRentAPI\TooliRent.API.csproj", "{55140AA9-B74D-40A1-97EF-F7B515BD101F}"
-	ProjectSection(ProjectDependencies) = postProject
-		{07FD3AD7-EC0E-4D51-BF4A-094205255FC8} = {07FD3AD7-EC0E-4D51-BF4A-094205255FC8}
-		{3E9A4A08-DA0B-4F91-AFC7-7FC4159CA193} = {3E9A4A08-DA0B-4F91-AFC7-7FC4159CA193}
-		{F6B0C99D-D0A8-4B1E-96E4-47319FCEA591} = {F6B0C99D-D0A8-4B1E-96E4-47319FCEA591}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TooliRentClassLibrary.Models", "TooliRentClassLibrary\TooliRentClassLibrary.Models.csproj", "{07FD3AD7-EC0E-4D51-BF4A-094205255FC8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TooliRent.DAL", "TooliRent.DAL\TooliRent.DAL.csproj", "{F6B0C99D-D0A8-4B1E-96E4-47319FCEA591}"
 	ProjectSection(ProjectDependencies) = postProject
-		{07FD3AD7-EC0E-4D51-BF4A-094205255FC8} = {07FD3AD7-EC0E-4D51-BF4A-094205255FC8}
+		{5D669119-171A-F181-3FDD-1D2B3CD75F50} = {5D669119-171A-F181-3FDD-1D2B3CD75F50}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TooliRent.BLL", "TooliRent.BLL\TooliRent.BLL.csproj", "{3E9A4A08-DA0B-4F91-AFC7-7FC4159CA193}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TooliRent.API", "TooliRent.API\TooliRent.API.csproj", "{BF271874-BF3C-25FC-9826-BEDC72AADBC4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5D669119-171A-F181-3FDD-1D2B3CD75F50} = {5D669119-171A-F181-3FDD-1D2B3CD75F50}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TooliRentClassLibrary.Models", "TooliRentClassLibrary.Models\TooliRentClassLibrary.Models.csproj", "{5D669119-171A-F181-3FDD-1D2B3CD75F50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,14 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{55140AA9-B74D-40A1-97EF-F7B515BD101F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55140AA9-B74D-40A1-97EF-F7B515BD101F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55140AA9-B74D-40A1-97EF-F7B515BD101F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55140AA9-B74D-40A1-97EF-F7B515BD101F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{07FD3AD7-EC0E-4D51-BF4A-094205255FC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{07FD3AD7-EC0E-4D51-BF4A-094205255FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{07FD3AD7-EC0E-4D51-BF4A-094205255FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{07FD3AD7-EC0E-4D51-BF4A-094205255FC8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F6B0C99D-D0A8-4B1E-96E4-47319FCEA591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F6B0C99D-D0A8-4B1E-96E4-47319FCEA591}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6B0C99D-D0A8-4B1E-96E4-47319FCEA591}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,6 +31,14 @@ Global
 		{3E9A4A08-DA0B-4F91-AFC7-7FC4159CA193}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E9A4A08-DA0B-4F91-AFC7-7FC4159CA193}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E9A4A08-DA0B-4F91-AFC7-7FC4159CA193}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF271874-BF3C-25FC-9826-BEDC72AADBC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF271874-BF3C-25FC-9826-BEDC72AADBC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF271874-BF3C-25FC-9826-BEDC72AADBC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF271874-BF3C-25FC-9826-BEDC72AADBC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D669119-171A-F181-3FDD-1D2B3CD75F50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D669119-171A-F181-3FDD-1D2B3CD75F50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D669119-171A-F181-3FDD-1D2B3CD75F50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D669119-171A-F181-3FDD-1D2B3CD75F50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

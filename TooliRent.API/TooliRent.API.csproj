@@ -34,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TooliRent.BLL\TooliRent.BLL.csproj" />
     <ProjectReference Include="..\TooliRent.DAL\TooliRent.DAL.csproj" />
+    <ProjectReference Include="..\TooliRentClassLibrary.Models\TooliRentClassLibrary.Models.csproj" />
     <ProjectReference Include="..\TooliRentClassLibrary\TooliRentClassLibrary.Models.csproj" />
   </ItemGroup>
 
