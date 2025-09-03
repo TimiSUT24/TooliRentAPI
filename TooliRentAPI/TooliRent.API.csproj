@@ -32,7 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TooliRentClassLibrary\TooliRentClassLibrary.csproj" />
+    <ProjectReference Include="..\TooliRent.BLL\TooliRent.BLL.csproj" />
+    <ProjectReference Include="..\TooliRent.DAL\TooliRent.DAL.csproj" />
+    <ProjectReference Include="..\TooliRentClassLibrary\TooliRentClassLibrary.Models.csproj" />
   </ItemGroup>
 
 </Project>
