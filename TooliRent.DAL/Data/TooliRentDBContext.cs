@@ -4,7 +4,7 @@ using TooliRentClassLibrary.Models.Models;
 
 namespace TooliRent.DAL.Data
 {
-    public class TooliRentDBContext : IdentityDbContext
+    public class TooliRentDBContext : IdentityDbContext<ApplicationUser>
     {
         public TooliRentDBContext(DbContextOptions<TooliRentDBContext> options) : base(options)
         {
@@ -13,8 +13,7 @@ namespace TooliRent.DAL.Data
 
         public DbSet<Booking> Bookings { get; set; } = null!;
         public DbSet<Tool> Tools { get; set; } = null!;
-        public DbSet<Category> Categories { get; set; } = null!;
-        public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!; 
+        public DbSet<Category> Categories { get; set; } = null!;    
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
