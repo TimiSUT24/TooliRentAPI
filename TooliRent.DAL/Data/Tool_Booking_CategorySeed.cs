@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using TooliRentClassLibrary.Models;
+using TooliRentClassLibrary.Models.Models;
 
-namespace TooliRentAPI.Data
+namespace TooliRent.DAL.Data
 {
     public static class Tool_Booking_CategorySeed
     {

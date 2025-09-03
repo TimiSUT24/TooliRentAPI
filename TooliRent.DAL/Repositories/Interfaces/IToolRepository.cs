@@ -1,6 +1,6 @@
-﻿using TooliRentClassLibrary.Models;
+﻿using TooliRentClassLibrary.Models.Models;
 
-namespace TooliRentAPI.Repositories.Interfaces
+namespace TooliRent.DAL.Repositories.Interfaces
 {
     public interface IToolRepository : IGenericRepository<Tool>
     {

@@ -1,4 +1,4 @@
-﻿namespace TooliRentAPI.Services.Interfaces
+﻿namespace TooliRent.BLL.Services.Interfaces
 {
     public interface IAuthService
     {

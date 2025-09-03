@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TooliRentAPI.Controllers
+namespace TooliRent.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

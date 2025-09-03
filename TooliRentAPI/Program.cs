@@ -1,21 +1,17 @@
-
-using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Scalar.AspNetCore;
-using System.Threading.Tasks;
-using TooliRentAPI.Data;
-using TooliRentAPI.Services;
-using TooliRentAPI.Services.Interfaces;
-using TooliRentClassLibrary.Mapper;
-using TooliRentClassLibrary.Models;
-using TooliRentClassLibrary.Validators;
+using TooliRent.API.Validators;
+using TooliRent.BLL.Mapper;
+using TooliRent.BLL.Services;
+using TooliRent.BLL.Services.Interfaces;
+using TooliRent.DAL.Data;
+using TooliRentClassLibrary.Models.Models;
 
-namespace TooliRentAPI
+namespace TooliRent.API
 {
     public class Program
     {

@@ -1,8 +1,8 @@
 ﻿using System.Linq.Expressions;
-using TooliRentAPI.Repositories.Interfaces;
-using TooliRentClassLibrary.Models;
+using TooliRent.DAL.Repositories.Interfaces;
+using TooliRentClassLibrary.Models.Models;
 
-namespace TooliRentAPI.Repositories
+namespace TooliRent.DAL.Repositories
 {
     public class ToolRepository : IToolRepository
     {

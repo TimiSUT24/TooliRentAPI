@@ -1,13 +1,8 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TooliRentClassLibrary.DTO;
-using TooliRentClassLibrary.Models;
+using TooliRentClassLibrary.Models.DTO;
+using TooliRentClassLibrary.Models.Models;
 
-namespace TooliRentClassLibrary.Mapper
+namespace TooliRent.BLL.Mapper
 {
     public class MappingProfile : Profile
     {      

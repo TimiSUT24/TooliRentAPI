@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace TooliRentAPI.Repositories.Interfaces
+namespace TooliRent.DAL.Repositories.Interfaces
 {
     public interface IGenericRepository<T> where T : class 
     {

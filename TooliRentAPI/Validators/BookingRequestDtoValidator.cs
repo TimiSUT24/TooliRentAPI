@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TooliRentClassLibrary.DTO;
+using TooliRentClassLibrary.Models.DTO;
 
-namespace TooliRentClassLibrary.Validators
+namespace TooliRent.API.Validators
 {
     public class BookingRequestDtoValidator : AbstractValidator<BookingRequestDto>
     {

@@ -3,9 +3,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using TooliRentAPI.Services.Interfaces;
+using TooliRent.BLL.Services.Interfaces;
 
-namespace TooliRentAPI.Services
+namespace TooliRent.BLL.Services
 {
     public class JwtService : IJwt
     {

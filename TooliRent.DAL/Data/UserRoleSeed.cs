@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using TooliRentClassLibrary.Models;
+using TooliRentClassLibrary.Models.Models;
 
-namespace TooliRentAPI.Data
+namespace TooliRent.DAL.Data
 {
     public static class UserRoleSeed
     {

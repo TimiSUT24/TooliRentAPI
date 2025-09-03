@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi.Models;
 
-namespace TooliRentAPI.Services
+namespace TooliRent.BLL.Services
 {
     public class BearerSecuritySchemeTransformer : IOpenApiDocumentTransformer
     {

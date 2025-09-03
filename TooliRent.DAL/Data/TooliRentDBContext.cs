@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TooliRentClassLibrary.Models;
+using TooliRentClassLibrary.Models.Models;
 
-namespace TooliRentAPI.Data
+namespace TooliRent.DAL.Data
 {
     public class TooliRentDBContext : IdentityDbContext
     {
