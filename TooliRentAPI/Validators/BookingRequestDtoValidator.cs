@@ -14,7 +14,7 @@ namespace TooliRentClassLibrary.Validators
         {
             RuleFor(x => x.ToolId).GreaterThan(0).WithMessage("ToolId must be greater than 0.");
             RuleFor(x => x.StartDate).LessThan(x => x.EndDate).WithMessage("StartDate must be before EndDate.");
-            RuleFor(x => x.EndDate).GreaterThan(DateTime.Now).WithMessage("EndDate must be in the future.");
+            RuleFor(x => x.EndDate).GreaterThan(DateTime.Now).WithMessage("EndDate must be in the future.");           
         }
     }
 }

@@ -18,7 +18,10 @@ namespace TooliRentClassLibrary.Mapper
              CreateMap<Booking, BookingResponseDto>()
                  .ForMember(dest => dest.ToolName, opt => opt.MapFrom(src => src.Tool.Name))
                  .ForMember(dest => dest.ToolDescription, opt => opt.MapFrom(src => src.Tool.Description));
-             CreateMap<BookingRequestDto, Booking>();                   
+             CreateMap<BookingRequestDto, Booking>(); 
+             CreateMap<RegisterDtoRequest, ApplicationUser>();
+             CreateMap<LoginDtoRequest, ApplicationUser>().ForMember(dest => dest.PasswordHash, opt => opt.Ignore());           
+
         }
     }
 }
