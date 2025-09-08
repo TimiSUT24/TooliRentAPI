@@ -9,7 +9,7 @@
         public bool IsAvailable => Quantity > 0; 
 
         public int CategoryId { get; set; }
-        public Category Category { get; set; } = new Category();
+        public Category Category { get; set; } = null!;
 
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>(); // Navigation property to Booking
 
