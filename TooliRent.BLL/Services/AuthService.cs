@@ -47,8 +47,7 @@ namespace TooliRent.BLL.Services
 
             //Assign role to user 
             await _userManager.AddToRoleAsync(user, "User");
-
-           
+        
             //Map and return the created user details
             return _mapper.Map<RegisterDtoResponse>(user);
         }

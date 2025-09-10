@@ -20,13 +20,14 @@ namespace TooliRent.API.Controllers
         [ProducesResponseType(statusCode: 201)]
         [ProducesResponseType(statusCode: 400)]
         public async Task<IActionResult> Register(RegisterDtoRequest registerDtoRequest)
-        {
-            if (!ModelState.IsValid)
-            {
-                BadRequest(ModelState);
-            }
+        {         
 
-           var response = await _authService.RegisterUserAsync(registerDtoRequest);                  
+            var response = await _authService.RegisterUserAsync(registerDtoRequest);
+
+            if (response == null)
+            {
+                return BadRequest("Registration failed");
+            }
 
             return Ok($"Welcome, {response.UserName}");
         }
