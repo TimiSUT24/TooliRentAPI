@@ -31,5 +31,27 @@ namespace TooliRent.API.Controllers
 
             return Ok($"Welcome, {response.UserName}");
         }
+
+        [HttpPost("login")]
+        [ProducesResponseType(statusCode: 200)]
+        [ProducesResponseType(statusCode: 401)]
+        public async Task<IActionResult> Login(LoginDtoRequest loginDtoRequest)
+        {
+            try
+            {
+                var response = await _authService.LoginAsync(loginDtoRequest);
+
+                if (response == null)
+                {
+                    return Unauthorized("Invalid email or password");
+                }
+
+                return Ok(response);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }          
+        }
     }
 }

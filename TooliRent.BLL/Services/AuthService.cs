@@ -29,7 +29,7 @@ namespace TooliRent.BLL.Services
                 Email = registerDtoRequest.Email,
                 PhoneNumber = registerDtoRequest.PhoneNumber,
             };
-
+           
             //Create user
             var result = await _userManager.CreateAsync(CreateUser, registerDtoRequest.Password);
 
@@ -50,6 +50,32 @@ namespace TooliRent.BLL.Services
         
             //Map and return the created user details
             return _mapper.Map<RegisterDtoResponse>(user);
+        }
+
+        public async Task<LoginDtoRespond?> LoginAsync(LoginDtoRequest loginDtoRequest)
+        {
+            var user = await _userManager.FindByEmailAsync(loginDtoRequest.Email);
+            if (user == null)
+            {
+                throw new UnauthorizedAccessException("Invalid email or password");
+            }
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDtoRequest.Password, false);
+
+            if (!result.Succeeded)
+            {
+                throw new UnauthorizedAccessException("Invalid email or password");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var token = _jwt.GenerateToken(user.Id, roles);
+
+            var response = _mapper.Map<LoginDtoRespond>(user);
+
+            response.Token = token;
+
+            return response;
+
         }
     }
 }
