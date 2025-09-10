@@ -23,6 +23,7 @@ namespace TooliRent.API
 
             //AddScoped Services
             builder.Services.AddScoped<IJwt, JwtService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
             //Get ConnectionString for db
             builder.Services.AddDbContext<TooliRentDBContext>(options =>

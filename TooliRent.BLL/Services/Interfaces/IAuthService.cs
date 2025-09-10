@@ -4,6 +4,6 @@ namespace TooliRent.BLL.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<RegisterDtoRequest> RegisterUserAsync(RegisterDtoRequest registerDtoRequest);
+        Task<RegisterDtoResponse?> RegisterUserAsync(RegisterDtoRequest registerDtoRequest);
     }
 }

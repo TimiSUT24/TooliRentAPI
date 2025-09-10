@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using TooliRent.BLL.Services.Interfaces;
 using TooliRentClassLibrary.Models.DTO;
@@ -6,7 +7,7 @@ using TooliRentClassLibrary.Models.Models;
 
 namespace TooliRent.BLL.Services
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         private readonly IJwt _jwt;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -20,7 +21,7 @@ namespace TooliRent.BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<RegisterDtoRequest> RegisterUserAsync(RegisterDtoRequest registerDtoRequest)
+        public async Task<RegisterDtoResponse?> RegisterUserAsync(RegisterDtoRequest registerDtoRequest)
         {
             var CreateUser = new ApplicationUser
             {
@@ -32,16 +33,24 @@ namespace TooliRent.BLL.Services
             //Create user
             var result = await _userManager.CreateAsync(CreateUser, registerDtoRequest.Password);
 
-            if (!result.Succeeded)
+            if(result == null || !result.Succeeded)
             {
-                throw new ArgumentException("Registration failed");
+                throw new Exception("Registration failed");
+            }
+
+            var user = await _userManager.FindByEmailAsync(registerDtoRequest.Email);
+
+            if(user == null)
+            {
+                throw new Exception("User not found after registration");
             }
 
             //Assign role to user 
-            await _userManager.AddToRoleAsync(CreateUser, "User");
+            await _userManager.AddToRoleAsync(user, "User");
 
+           
             //Map and return the created user details
-            return _mapper.Map<RegisterDtoRequest>(CreateUser);
+            return _mapper.Map<RegisterDtoResponse>(user);
         }
     }
 }

@@ -15,7 +15,8 @@ namespace TooliRent.BLL.Mapper
                  .ForMember(dest => dest.ToolDescription, opt => opt.MapFrom(src => src.Tool.Description));
              CreateMap<BookingRequestDto, Booking>(); 
              CreateMap<RegisterDtoRequest, ApplicationUser>();
-             CreateMap<LoginDtoRequest, ApplicationUser>().ForMember(dest => dest.PasswordHash, opt => opt.Ignore());           
+            CreateMap<ApplicationUser, RegisterDtoResponse>();
+            CreateMap<LoginDtoRequest, ApplicationUser>().ForMember(dest => dest.PasswordHash, opt => opt.Ignore());           
 
         }
     }
