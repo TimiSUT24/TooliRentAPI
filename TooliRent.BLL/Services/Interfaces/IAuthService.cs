@@ -6,5 +6,7 @@ namespace TooliRent.BLL.Services.Interfaces
     {
         Task<RegisterDtoResponse?> RegisterUserAsync(RegisterDtoRequest registerDtoRequest);
         Task<LoginDtoRespond?> LoginAsync(LoginDtoRequest loginDtoRequest);
+        Task<TokenRefreshResponseDto?> RefreshToken(TokenRefreshRequestDto tokenRefreshRequest);
+
     }
 }
