@@ -13,7 +13,8 @@ namespace TooliRent.BLL.Mapper
     {
         public LoginProfile()
         {
-            CreateMap<ApplicationUser, LoginDtoRespond>().ForMember(dest => dest.Token, opt => opt.Ignore());
+            CreateMap<ApplicationUser, LoginDtoRespond>().ForMember(dest => dest.Token, opt => opt.Ignore())
+                                                         .ForMember(dest => dest.RefreshToken, opt => opt.Ignore());
         }
        
     }

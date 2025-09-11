@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TooliRent.BLL.Services.Interfaces;
 using TooliRentClassLibrary.Models.DTO;
@@ -52,6 +54,29 @@ namespace TooliRent.API.Controllers
             {
                 return Unauthorized(ex.Message);
             }          
+        }
+
+        [Authorize(Roles ="User")]
+        [HttpPost("refresh-token")]
+        [ProducesResponseType(statusCode: 200)]
+        [ProducesResponseType(statusCode: 401)]
+        public async Task<IActionResult> RefreshToken(TokenRefreshRequestDto tokenRefreshRequest)
+        {
+            try
+            {
+                var response = await _authService.RefreshToken(tokenRefreshRequest);
+
+                if (response == null)
+                {
+                    return Unauthorized("Invalid refresh token or token has expired");
+                }
+
+                return Ok(response);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
         }
     }
 }

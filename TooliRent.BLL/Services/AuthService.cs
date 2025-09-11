@@ -69,13 +69,43 @@ namespace TooliRent.BLL.Services
 
             var roles = await _userManager.GetRolesAsync(user);
             var token = _jwt.GenerateToken(user.Id, roles);
+            var refreshToken = Guid.NewGuid().ToString("N"); // Generate a new refresh token 
+
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); // Set refresh token expiry time
+            await _userManager.UpdateAsync(user); // Update user with new refresh token
 
             var response = _mapper.Map<LoginDtoRespond>(user);
 
             response.Token = token;
+            response.RefreshToken = refreshToken;
 
             return response;
 
+        }
+
+        public async Task<TokenRefreshResponseDto?> RefreshToken(TokenRefreshRequestDto tokenRefreshRequest)
+        {
+            var user = await _userManager.FindByEmailAsync(tokenRefreshRequest.Email);
+
+            if (user == null || user.RefreshToken != tokenRefreshRequest.RefreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+            {
+                throw new UnauthorizedAccessException("Invalid refresh token or token has expired");
+            }
+
+            var roles = await _userManager.GetRolesAsync(user);
+            var newToken = _jwt.GenerateToken(user.Id, roles);
+            var newRefreshToken = Guid.NewGuid().ToString("N"); // Generate a new refresh token
+            user.RefreshToken = newRefreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); // Set new refresh token expiry time
+            await _userManager.UpdateAsync(user); // Update user with new refresh token
+
+            return new TokenRefreshResponseDto
+            {
+                AccessToken = newToken,
+                RefreshToken = newRefreshToken,
+                ExpiresAt = DateTime.UtcNow.AddMinutes(30) // Assuming the access token expires in 15 minutes
+            };
         }
     }
 }
