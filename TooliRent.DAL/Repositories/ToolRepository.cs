@@ -1,4 +1,6 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using TooliRent.DAL.Data;
 using TooliRent.DAL.Repositories.Interfaces;
 using TooliRentClassLibrary.Models.Models;
 
@@ -6,44 +8,50 @@ namespace TooliRent.DAL.Repositories
 {
     public class ToolRepository : IToolRepository
     {
-        public Task AddAsync(Tool entity)
+        private readonly TooliRentDBContext _context;
+        public ToolRepository(TooliRentDBContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<bool> AnyAsync(Expression<Func<Tool, bool>> predicate)
+        public async Task AddAsync(Tool entity)
         {
-            throw new NotImplementedException();
+            await _context.Tools.AddAsync(entity);
         }
 
-        public Task DeleteAsync(Tool entity)
+        public async Task<bool> AnyAsync(Expression<Func<Tool, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _context.Tools.AnyAsync(predicate);
         }
 
-        public Task<IEnumerable<Tool>> FindAsync(Expression<Func<Tool, bool>> predicate)
+        public async Task DeleteAsync(Tool entity)
         {
-            throw new NotImplementedException();
+            _context.Tools.Remove(entity);          
         }
 
-        public Task<IEnumerable<Tool>> GetAllAsync()
+        public async Task<IEnumerable<Tool>> FindAsync(Expression<Func<Tool, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _context.Tools.Where(predicate).ToListAsync();
         }
 
-        public Task<Tool?> GetByIdAsync(int id)
+        public async Task<IEnumerable<Tool>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Tools.Where(tool => tool.IsAvailable && tool.Quantity > 0).ToListAsync(); //Return available tools
         }
 
-        public Task SaveChangesAsync()
+        public async Task<Tool?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+             return await _context.Tools.FindAsync(id);
         }
 
-        public Task UpdateAsync(Tool entity)
+        public async Task SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Tool entity)
+        {
+            _context.Tools.Update(entity);
         }
     }
 }
