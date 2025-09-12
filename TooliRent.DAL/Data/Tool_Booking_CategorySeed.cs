@@ -72,9 +72,11 @@ namespace TooliRent.DAL.Data
                 Console.WriteLine("Seeding failed" + ex.Message);
             }
 
+
             // Seed ToolItems
+            var savedTools = await context.Tools.ToListAsync();
             var toolItems = new List<ToolItem>();
-            foreach (var tool in tools)
+            foreach (var tool in savedTools)
             {
                 // 3 units per tool
                 for (int i = 0; i < 3; i++)
