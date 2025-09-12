@@ -11,8 +11,8 @@ namespace TooliRent.BLL.Mapper
              CreateMap<Tool, ToolResponseDto>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
              CreateMap<Booking, BookingResponseDto>()
-                 .ForMember(dest => dest.ToolName, opt => opt.MapFrom(src => src.Tool.Name))
-                 .ForMember(dest => dest.ToolDescription, opt => opt.MapFrom(src => src.Tool.Description));
+                 .ForMember(dest => dest.ToolName, opt => opt.MapFrom(src => src.ToolItems))
+                 .ForMember(dest => dest.ToolDescription, opt => opt.MapFrom(src => src.ToolItems));
 
              CreateMap<BookingRequestDto, Booking>();           
         }
