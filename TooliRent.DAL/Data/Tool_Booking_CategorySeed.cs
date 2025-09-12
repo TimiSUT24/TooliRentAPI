@@ -38,28 +38,24 @@ namespace TooliRent.DAL.Data
                 {
                     Name = "Drill",
                     Description = "Cordless drill for various drilling tasks.",
-                    Quantity = 3,
                     CategoryId = context.Categories.First(c => c.Name == "Power Tools").Id
                 },
                 new Tool
                 {
                     Name = "Hammer",
-                    Description = "Heavy-duty hammer for construction work.",
-                    Quantity = 5,
+                    Description = "Heavy-duty hammer for construction work.",                  
                     CategoryId = context.Categories.First(c => c.Name == "Hand Tools").Id
                 },
                 new Tool
                 {
                     Name = "Lawn Mower",
-                    Description = "Gas-powered lawn mower for maintaining your lawn.",
-                    Quantity = 2,
+                    Description = "Gas-powered lawn mower for maintaining your lawn.",                   
                     CategoryId = context.Categories.First(c => c.Name == "Gardening Tools").Id
                 },
                 new Tool
                 {
                     Name = "Concrete Mixer",
-                    Description = "Electric concrete mixer for construction projects.",
-                    Quantity = 1,
+                    Description = "Electric concrete mixer for construction projects.",                   
                     CategoryId = context.Categories.First(c => c.Name == "Construction Tools").Id
                 }
             };
@@ -74,27 +70,53 @@ namespace TooliRent.DAL.Data
             catch (Exception ex)
             {
                 Console.WriteLine("Seeding failed" + ex.Message);
-            }           
-             
-             
+            }
+
+            // Seed ToolItems
+            var toolItems = new List<ToolItem>();
+            foreach (var tool in tools)
+            {
+                // 3 units per tool
+                for (int i = 0; i < 3; i++)
+                {
+                    toolItems.Add(new ToolItem
+                    {
+                        ToolId = tool.Id,
+                        Status = ToolStatus.Available
+                    });
+                }
+            }
+            await context.ToolItems.AddRangeAsync(toolItems);
+            await context.SaveChangesAsync();
+
+
+            var drillItem = await context.ToolItems
+                       .FirstAsync(ti => ti.Tool.Name == "Drill" && ti.Status == ToolStatus.Available);
+
+            var hammerItem = await context.ToolItems
+                .FirstAsync(ti => ti.Tool.Name == "Hammer" && ti.Status == ToolStatus.Available);
             // Seed Bookings 
             var bookings = new List<Booking>
             {
                 new Booking
-                {
-                    ToolId = context.Tools.First(t => t.Name == "Drill").Id,                   
+                {                                     
                     UserId = users[1].Id, // Assuming the first user exists
                     StartDate = DateTime.Now,
-                    EndDate = DateTime.Now.AddDays(3)
+                    EndDate = DateTime.Now.AddDays(3),
+                    Status = BookingStatus.Pending,
+                    ToolItems = new List<ToolItem> { drillItem }
                 },
                 new Booking
-                {
-                    ToolId = context.Tools.First(t => t.Name == "Hammer").Id,
+                {                   
                     UserId =  users[1].Id,
                     StartDate = DateTime.Now,
-                    EndDate = DateTime.Now.AddDays(2)
+                    EndDate = DateTime.Now.AddDays(2),
+                    Status = BookingStatus.Pending,
+                    ToolItems = new List<ToolItem> { hammerItem }
                 }
             };
+            drillItem.Status = ToolStatus.Borrowed;
+            hammerItem.Status = ToolStatus.Borrowed;
             try
             {
                 if (!context.Bookings.Any())

@@ -36,7 +36,7 @@ namespace TooliRent.DAL.Repositories
 
         public async Task<IEnumerable<Tool>> GetAllAsync()
         {
-            return await _context.Tools.Where(tool => tool.IsAvailable && tool.Quantity > 0).ToListAsync(); //Return available tools
+           throw new NotImplementedException();
         }
 
         public async Task<Tool?> GetByIdAsync(int id)
