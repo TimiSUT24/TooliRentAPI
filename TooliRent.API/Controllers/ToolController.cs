@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TooliRent.BLL.Services.Interfaces;
+using TooliRentClassLibrary.Models.Models;
 
 namespace TooliRent.API.Controllers
 {
@@ -54,6 +55,26 @@ namespace TooliRent.API.Controllers
             catch (Exception ex)
             {
                 return NotFound($"Error retrieving tool: {ex.Message}");
+            }
+        }
+
+        [HttpGet("filterTools")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetFilteredTools(string? categoryName = null,ToolStatus? status = null,bool onlyAvailable = false)
+        {
+            try
+            {
+                var tools = await _toolService.GetFilteredToolsAsync(categoryName, status, onlyAvailable);
+                if (tools == null || !tools.Any())
+                {
+                    return NotFound("No tools found matching the specified criteria.");
+                }
+                return Ok(tools);
+            }
+            catch (Exception ex)
+            {
+                return NotFound($"Error retrieving tools: {ex.Message}");
             }
         }
     }

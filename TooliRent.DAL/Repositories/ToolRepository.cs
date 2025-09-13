@@ -57,6 +57,30 @@ namespace TooliRent.DAL.Repositories
             throw new NotImplementedException();
         }
 
+        public async Task<IEnumerable<Tool>> GetFilteredToolsAsync(string? categoryName = null,ToolStatus? status = null, bool? onlyAvailable = null)
+        {
+            IQueryable<Tool> query = _context.Tools
+                .Include(t => t.Category)
+                .Include(t => t.ToolItems);
+
+            if(categoryName != null)
+            {
+                query = query.Where(t => t.Category.Name == categoryName);
+            }
+
+            if(status.HasValue)
+            {
+                query = query.Where(t => t.ToolItems.Any(ti => ti.Status == status.Value));
+            }
+
+            if (onlyAvailable == true)
+            {
+                query = query.Where(t => t.ToolItems.Any(ti => ti.Status == ToolStatus.Available));
+            }
+
+            return await query.ToListAsync();
+        }
+
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
