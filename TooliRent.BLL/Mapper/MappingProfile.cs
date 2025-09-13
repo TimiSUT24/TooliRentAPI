@@ -7,9 +7,7 @@ namespace TooliRent.BLL.Mapper
     public class MappingProfile : Profile
     {      
         public MappingProfile()
-        {
-             CreateMap<Tool, ToolResponseDto>()
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+        {          
              CreateMap<Booking, BookingResponseDto>()
                  .ForMember(dest => dest.ToolName, opt => opt.MapFrom(src => src.ToolItems))
                  .ForMember(dest => dest.ToolDescription, opt => opt.MapFrom(src => src.ToolItems));

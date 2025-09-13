@@ -9,6 +9,8 @@ using TooliRent.BLL.Mapper;
 using TooliRent.BLL.Services;
 using TooliRent.BLL.Services.Interfaces;
 using TooliRent.DAL.Data;
+using TooliRent.DAL.Repositories;
+using TooliRent.DAL.Repositories.Interfaces;
 using TooliRentClassLibrary.Models.Models;
 
 namespace TooliRent.API
@@ -24,6 +26,10 @@ namespace TooliRent.API
             //AddScoped Services
             builder.Services.AddScoped<IJwt, JwtService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IToolService, ToolService>();
+
+            //AddScoped Repositories
+            builder.Services.AddScoped<IToolRepository, ToolRepository>();
 
             //Get ConnectionString for db
             builder.Services.AddDbContext<TooliRentDBContext>(options =>

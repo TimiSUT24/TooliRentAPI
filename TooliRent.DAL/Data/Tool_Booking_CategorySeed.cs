@@ -88,9 +88,12 @@ namespace TooliRent.DAL.Data
                     });
                 }
             }
-            await context.ToolItems.AddRangeAsync(toolItems);
-            await context.SaveChangesAsync();
-
+            if (!context.ToolItems.Any())
+            {
+                await context.ToolItems.AddRangeAsync(toolItems);
+                await context.SaveChangesAsync();
+            }
+               
 
             var drillItem = await context.ToolItems
                        .FirstAsync(ti => ti.Tool.Name == "Drill" && ti.Status == ToolStatus.Available);
