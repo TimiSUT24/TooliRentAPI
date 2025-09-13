@@ -10,5 +10,6 @@ namespace TooliRent.BLL.Services.Interfaces
     public interface IToolService
     {
         Task<IEnumerable<ToolResponseDto?>> AvailableTools();
+        Task<ToolResponseDto?> GetToolByName(string name);
     }
 }

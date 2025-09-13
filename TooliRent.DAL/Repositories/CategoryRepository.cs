@@ -36,6 +36,11 @@ namespace TooliRent.DAL.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<Category?> GetByIdAsync(string name)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task SaveChangesAsync()
         {
             throw new NotImplementedException();

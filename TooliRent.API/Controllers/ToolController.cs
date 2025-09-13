@@ -35,6 +35,26 @@ namespace TooliRent.API.Controllers
             {
                 return NotFound($"No tools were found: {ex.Message}");
             }
-        }     
+        }
+
+        [HttpGet("{toolName}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetToolByName(string toolName)
+        {
+            try
+            {
+                var tool = await _toolService.GetToolByName(toolName);
+                if (tool == null)
+                {
+                    return NotFound($"Tool with name '{toolName}' not found.");
+                }
+                return Ok(tool);
+            }
+            catch (Exception ex)
+            {
+                return NotFound($"Error retrieving tool: {ex.Message}");
+            }
+        }
     }
 }

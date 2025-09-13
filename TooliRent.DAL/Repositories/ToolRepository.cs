@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.Linq.Expressions;
 using TooliRent.DAL.Data;
 using TooliRent.DAL.Repositories.Interfaces;
@@ -43,9 +44,17 @@ namespace TooliRent.DAL.Repositories
                  .ToListAsync();
         }
 
-        public async Task<Tool?> GetByIdAsync(int id)
+        public async Task<Tool?> GetByIdAsync(string name)
         {
-             return await _context.Tools.FindAsync(id);
+             return await _context.Tools
+                .Include(t => t.Category)
+                .Include(t => t.ToolItems)
+                .FirstOrDefaultAsync(t => t.Name == name);
+        }
+
+        public Task<Tool?> GetByIdAsync(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task SaveChangesAsync()

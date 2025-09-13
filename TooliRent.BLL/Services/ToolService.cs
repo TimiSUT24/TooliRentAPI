@@ -31,5 +31,17 @@ namespace TooliRent.BLL.Services
 
             return _mapper.Map<IEnumerable<ToolResponseDto?>>(tools);
         }
+
+        public async Task<ToolResponseDto?> GetToolByName(string toolName)
+        {
+            var tool = await _toolRepository.GetByIdAsync(toolName);
+
+            if (tool == null)
+            {
+                throw new KeyNotFoundException($"Tool with name '{toolName}' not found.");
+            }
+
+            return _mapper.Map<ToolResponseDto?>(tool);
+        }
     }
 }
