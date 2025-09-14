@@ -10,5 +10,6 @@ namespace TooliRent.BLL.Services.Interfaces
     public interface IBookingService
     {
         Task<BookingResponseDto?> ToolBooking(BookingRequestDto bookingRequest, string userId);
+        Task<IEnumerable<BookingDetailedResponseDto?>> GetUserBookingsAsync(string userId);
     }
 }

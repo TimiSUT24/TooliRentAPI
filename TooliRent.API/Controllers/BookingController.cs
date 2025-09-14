@@ -54,5 +54,37 @@ namespace TooliRent.API.Controllers
                 return BadRequest($"An error occurred while creating the booking: {ex.Message}");
             }
         }
+
+        [Authorize(Roles = "User")]
+        [HttpGet("user-bookings")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetUserBookings()
+        {
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //Get the user id stored in the token 
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return BadRequest("User ID not found in token.");
+                }
+
+                var bookings = await _bookingService.GetUserBookingsAsync(userId);
+                if (bookings == null || !bookings.Any())
+                {
+                    return NotFound("No bookings found for the user.");
+                }
+                return Ok(bookings);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred while retrieving bookings: {ex.Message}");
+            }
+        }
+
     }
 }

@@ -29,7 +29,7 @@ namespace TooliRent.BLL.Services
             var userBookings = await _bookingRepository.FindAsync(b => b.UserId == userId && b.Status == BookingStatus.Pending || b.Status == BookingStatus.Active);
             if (userBookings.Count() >= 5)
             {
-                throw new InvalidOperationException("User cannot have more than 5 pending bookings.");
+                throw new InvalidOperationException("User cannot have more than bookings.");
             }
 
             var tool = await _toolRepository.GetByNameAsync(bookingRequest.ToolName);
@@ -61,6 +61,17 @@ namespace TooliRent.BLL.Services
             await _bookingRepository.SaveChangesAsync();
 
             return _mapper.Map<BookingResponseDto?>(booking);
+        }
+
+        public async Task<IEnumerable<BookingDetailedResponseDto?>> GetUserBookingsAsync(string userId)
+        {
+            var bookings = await _bookingRepository.GetUserBookingsAsync(userId);
+            if (bookings == null || !bookings.Any())
+            {
+                throw new KeyNotFoundException("No bookings found for the user.");
+            }
+
+            return _mapper.Map<IEnumerable<BookingDetailedResponseDto?>>(bookings);
         }
     }
 }

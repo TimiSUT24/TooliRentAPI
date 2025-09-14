@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TooliRent.DAL.Data;
 using TooliRent.DAL.Repositories.Interfaces;
 using TooliRentClassLibrary.Models.Models;
@@ -27,15 +28,30 @@ namespace TooliRent.DAL.Repositories
             await Task.Run(() => _context.Bookings.Remove(entity));
         }
 
-        public Task<IEnumerable<Booking>> FindAsync(Expression<Func<Booking, bool>> predicate)
+        public async Task<IEnumerable<Booking>> FindAsync(Expression<Func<Booking, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _context.Bookings.Where(predicate).ToListAsync();
         }
 
-        public Task<IEnumerable<Booking>> GetAllAsync()
+        public async Task<IEnumerable<Booking>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Bookings
+                .Include(b => b.ToolItems)
+                .ThenInclude(ti => ti.Tool) //WIP
+                .Include(u => u.User)               
+                .ToListAsync();
         }
+
+        public async Task<IEnumerable<Booking>> GetUserBookingsAsync(string userId)
+        {
+            return await _context.Bookings
+                .Include(b => b.ToolItems)
+                .ThenInclude(ti => ti.Tool)
+                .Include(u => u.User)
+                .Where(u => u.UserId == userId)
+                .ToListAsync();
+        }
+
 
         public Task<Booking?> GetByIdAsync(int id)
         {
