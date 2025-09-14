@@ -35,7 +35,7 @@ namespace TooliRent.BLL.Services
 
         public async Task<ToolResponseDto?> GetToolByName(string toolName)
         {
-            var tool = await _toolRepository.GetByIdAsync(toolName);
+            var tool = await _toolRepository.GetByNameAsync(toolName);
 
             if (tool == null)
             {

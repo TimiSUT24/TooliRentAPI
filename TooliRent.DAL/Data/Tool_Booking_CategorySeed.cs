@@ -120,12 +120,13 @@ namespace TooliRent.DAL.Data
                     ToolItems = new List<ToolItem> { hammerItem }
                 }
             };
-            drillItem.Status = ToolStatus.Borrowed;
-            hammerItem.Status = ToolStatus.Borrowed;
+           
             try
             {
                 if (!context.Bookings.Any())
                 {
+                    drillItem.Status = ToolStatus.Borrowed;
+                    hammerItem.Status = ToolStatus.Borrowed;
                     await context.Bookings.AddRangeAsync(bookings);
                     await context.SaveChangesAsync();
                 }

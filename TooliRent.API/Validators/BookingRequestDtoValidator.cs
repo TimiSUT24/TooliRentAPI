@@ -7,9 +7,10 @@ namespace TooliRent.API.Validators
     {
         public BookingRequestDtoValidator()
         {
-            RuleFor(x => x.ToolId).GreaterThan(0).WithMessage("ToolId must be greater than 0.");
-            RuleFor(x => x.StartDate).LessThan(x => x.EndDate).WithMessage("StartDate must be before EndDate.");
-            RuleFor(x => x.EndDate).GreaterThan(DateTime.Now).WithMessage("EndDate must be in the future.");           
+            RuleFor(x => x.ToolName).NotNull().NotEmpty().WithMessage("ToolName is required.");
+            RuleFor(x => x.StartDate).LessThan(x => x.EndDate).GreaterThan(DateTime.Now).WithMessage("StartDate must be before EndDate.");
+            RuleFor(x => x.EndDate).GreaterThan(DateTime.Now).WithMessage("EndDate must be in the future.");  
+            RuleFor(x => x.EndDate).NotEqual(x => x.StartDate).WithMessage("EndDate must be different from StartDate.");                        
         }
     }
 }

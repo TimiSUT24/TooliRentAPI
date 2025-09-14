@@ -7,5 +7,6 @@ namespace TooliRent.API.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
+        
     }
 }

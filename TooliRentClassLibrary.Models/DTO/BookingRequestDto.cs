@@ -1,8 +1,10 @@
-﻿namespace TooliRentClassLibrary.Models.DTO
+﻿using TooliRentClassLibrary.Models.Models;
+
+namespace TooliRentClassLibrary.Models.DTO
 {
     public class BookingRequestDto
     {
-        public int ToolId { get; set; } 
+        public string ToolName { get; set; } = string.Empty;       
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 

@@ -36,7 +36,7 @@ namespace TooliRent.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Category?> GetByIdAsync(string name)
+        public Task<Category?> GetByNameAsync(string name)
         {
             throw new NotImplementedException();
         }

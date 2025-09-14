@@ -27,9 +27,11 @@ namespace TooliRent.API
             builder.Services.AddScoped<IJwt, JwtService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IToolService, ToolService>();
+            builder.Services.AddScoped<IBookingService, BookingService>();
 
             //AddScoped Repositories
             builder.Services.AddScoped<IToolRepository, ToolRepository>();
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 
             //Get ConnectionString for db
             builder.Services.AddDbContext<TooliRentDBContext>(options =>
@@ -38,7 +40,7 @@ namespace TooliRent.API
             builder.Services.AddAutoMapper(cfg =>
             {
                 // optional: additional configuration here
-            }, typeof(MappingProfile), typeof(RegisterProfile));
+            }, typeof(RegisterProfile), typeof(ToolProfile), typeof(BookingProfile), typeof(LoginProfile));
 
             // Add FluentValidation 
             builder.Services.AddValidatorsFromAssemblyContaining<BookingRequestDtoValidator>();            

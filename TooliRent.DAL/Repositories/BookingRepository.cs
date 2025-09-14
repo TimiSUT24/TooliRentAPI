@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using TooliRent.DAL.Data;
 using TooliRent.DAL.Repositories.Interfaces;
 using TooliRentClassLibrary.Models.Models;
 
@@ -6,9 +7,14 @@ namespace TooliRent.DAL.Repositories
 {
     public class BookingRepository : IBookingRepository
     {
-        public Task AddAsync(Booking entity)
+        private readonly TooliRentDBContext _context;
+        public BookingRepository(TooliRentDBContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+        }
+        public async Task AddAsync(Booking entity)
+        {
+            await _context.Bookings.AddAsync(entity);
         }
 
         public Task<bool> AnyAsync(Expression<Func<Booking, bool>> predicate)
@@ -16,9 +22,9 @@ namespace TooliRent.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(Booking entity)
+        public async Task DeleteAsync(Booking entity)
         {
-            throw new NotImplementedException();
+            await Task.Run(() => _context.Bookings.Remove(entity));
         }
 
         public Task<IEnumerable<Booking>> FindAsync(Expression<Func<Booking, bool>> predicate)
@@ -36,14 +42,14 @@ namespace TooliRent.DAL.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Booking?> GetByIdAsync(string name)
+        public Task<Booking?> GetByNameAsync(string name)
         {
             throw new NotImplementedException();
         }
 
-        public Task SaveChangesAsync()
+        public async Task SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            await _context.SaveChangesAsync();
         }
 
         public Task UpdateAsync(Booking entity)

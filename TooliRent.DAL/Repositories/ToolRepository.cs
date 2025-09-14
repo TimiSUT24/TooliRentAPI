@@ -44,7 +44,7 @@ namespace TooliRent.DAL.Repositories
                  .ToListAsync();
         }
 
-        public async Task<Tool?> GetByIdAsync(string name)
+        public async Task<Tool?> GetByNameAsync(string name)
         {
              return await _context.Tools
                 .Include(t => t.Category)
