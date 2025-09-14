@@ -73,5 +73,33 @@ namespace TooliRent.BLL.Services
 
             return _mapper.Map<IEnumerable<BookingDetailedResponseDto?>>(bookings);
         }
+
+        public async Task<bool> CancelBookingAsync(int bookingId, string userId)
+        {
+            var booking = await _bookingRepository.GetByIdAsync(bookingId, userId);
+            if (booking == null)
+            {
+                throw new KeyNotFoundException($"Booking with ID '{bookingId}' not found for the user.");
+            }
+
+            if (booking.Status != BookingStatus.Pending)
+            {
+                throw new InvalidOperationException("Only pending bookings can be cancelled.");
+            }
+
+            booking.Status = BookingStatus.Cancelled;
+            foreach (var item in booking.ToolItems)
+            {
+                item.Status = ToolStatus.Available;
+            }
+
+            if(booking.Status == BookingStatus.Cancelled)
+            {
+                await _bookingRepository.DeleteAsync(booking);               
+            }
+
+            await _bookingRepository.SaveChangesAsync();
+            return true;
+        }
     }
 }

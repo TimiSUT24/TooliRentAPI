@@ -53,9 +53,13 @@ namespace TooliRent.DAL.Repositories
         }
 
 
-        public Task<Booking?> GetByIdAsync(int id)
+        public async Task<Booking?> GetByIdAsync(int id, string userId)
         {
-            throw new NotImplementedException();
+            return await _context.Bookings
+                .Include(b => b.ToolItems)
+                .ThenInclude(ti => ti.Tool) 
+                .Include(u => u.User)
+                .FirstOrDefaultAsync(b => b.Id == id && b.UserId == userId);
         }
 
         public Task<Booking?> GetByNameAsync(string name)
@@ -69,6 +73,11 @@ namespace TooliRent.DAL.Repositories
         }
 
         public Task UpdateAsync(Booking entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Booking?> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
