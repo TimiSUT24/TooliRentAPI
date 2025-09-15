@@ -101,5 +101,24 @@ namespace TooliRent.BLL.Services
             await _bookingRepository.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> PickUp(int bookingId, string userId)
+        {
+            var booking = await _bookingRepository.GetByIdAsync(bookingId, userId);
+            if (booking == null)
+            {
+                throw new KeyNotFoundException($"Booking with ID '{bookingId}' not found for the user.");
+            }
+
+            if (booking.Status != BookingStatus.Pending)
+            {
+                throw new InvalidOperationException("Only pending bookings can be picked up.");
+            }
+
+            booking.Status = BookingStatus.Active;
+            await _bookingRepository.SaveChangesAsync();
+
+            return true;
+        }
     }
 }
