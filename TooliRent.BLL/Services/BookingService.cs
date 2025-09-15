@@ -120,5 +120,37 @@ namespace TooliRent.BLL.Services
 
             return true;
         }
+
+        public async Task<bool> Return(int bookingId, string userId)
+        {
+            var booking = await _bookingRepository.GetByIdAsync(bookingId, userId);
+
+            if (booking == null)
+            {
+                throw new KeyNotFoundException($"Booking with ID '{bookingId}' not found for the user.");
+            }
+
+            if (booking.Status != BookingStatus.Active)
+            {
+                throw new InvalidOperationException("Only active bookings can be returned.");
+            }
+
+            //write check when tool is returned late
+            if(DateTime.UtcNow > booking.EndDate)
+            {
+                
+            }
+
+
+            booking.Status = BookingStatus.Completed;
+
+            if(booking.Status != BookingStatus.Completed)
+            {
+                throw new InvalidOperationException("Booking status could not be updated to Completed.");
+            }
+
+            await _bookingRepository.SaveChangesAsync();
+            return true;
+        }
     }
 }
