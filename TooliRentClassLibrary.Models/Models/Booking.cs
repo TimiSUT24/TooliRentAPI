@@ -12,6 +12,9 @@ namespace TooliRentClassLibrary.Models.Models
         public DateTime EndDate { get; set; }
         public BookingStatus Status { get; set; } = BookingStatus.Pending;
 
+        public bool IsLate { get; set; } = false;
+        public decimal? Latefee { get; set; }
+
     }
 
     public enum BookingStatus

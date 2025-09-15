@@ -120,5 +120,38 @@ namespace TooliRent.BLL.Services
 
             return true;
         }
+
+        public async Task<bool> Return(int bookingId, string userId)
+        {
+            var booking = await _bookingRepository.GetByIdAsync(bookingId, userId);
+
+            if (booking == null)
+            {
+                throw new KeyNotFoundException($"Booking with ID '{bookingId}' not found for the user.");
+            }
+
+            if (booking.Status != BookingStatus.Active)
+            {
+                throw new InvalidOperationException("Only active bookings can be returned.");
+            }
+
+            if(DateTime.UtcNow > booking.EndDate)
+            {
+                booking.IsLate = true;
+                var daysLate = (DateTime.UtcNow - booking.EndDate).Days;
+
+                booking.Latefee = daysLate * 10; //late fee calculation: $10 per day late
+            }
+
+            booking.Status = BookingStatus.Completed;
+
+            if(booking.Status != BookingStatus.Completed)
+            {
+                throw new InvalidOperationException("Booking status could not be updated to Completed.");
+            }
+
+            await _bookingRepository.SaveChangesAsync();
+            return true;
+        }
     }
 }

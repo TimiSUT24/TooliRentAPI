@@ -159,5 +159,42 @@ namespace TooliRent.API.Controllers
             }
         }
 
+        [Authorize(Roles = "User")]
+        [HttpPut("return")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ReturnTool([FromQuery] int bookingId)
+        {
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //Get the user id stored in the token 
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return BadRequest("User ID not found in token.");
+                }
+
+                var result = await _bookingService.Return(bookingId, userId);
+
+                if (!result)
+                {
+                    return NotFound("Booking could not be found or updated.");
+                }
+                return Ok("Tool returned successfully.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred while updating the booking: {ex.Message}");
+            }
+        }
+
     }
 }
