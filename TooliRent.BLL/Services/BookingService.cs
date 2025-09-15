@@ -115,6 +115,11 @@ namespace TooliRent.BLL.Services
                 throw new InvalidOperationException("Only pending bookings can be picked up.");
             }
 
+            if(DateTime.Now.AddHours(2) < booking.StartDate)
+            {
+                throw new InvalidOperationException("Booking cannot be picked up 2 hours before the start date.");
+            }
+
             booking.Status = BookingStatus.Active;
             await _bookingRepository.SaveChangesAsync();
 
@@ -135,10 +140,10 @@ namespace TooliRent.BLL.Services
                 throw new InvalidOperationException("Only active bookings can be returned.");
             }
 
-            if(DateTime.UtcNow > booking.EndDate)
+            if(DateTime.Now.AddDays(1) > booking.EndDate)
             {
                 booking.IsLate = true;
-                var daysLate = (DateTime.UtcNow - booking.EndDate).Days;
+                var daysLate = (DateTime.Now - booking.EndDate).Days;
 
                 booking.Latefee = daysLate * 10; //late fee calculation: $10 per day late
             }
