@@ -135,12 +135,13 @@ namespace TooliRent.BLL.Services
                 throw new InvalidOperationException("Only active bookings can be returned.");
             }
 
-            //write check when tool is returned late
             if(DateTime.UtcNow > booking.EndDate)
             {
-                
-            }
+                booking.IsLate = true;
+                var daysLate = (DateTime.UtcNow - booking.EndDate).Days;
 
+                booking.Latefee = daysLate * 10; //late fee calculation: $10 per day late
+            }
 
             booking.Status = BookingStatus.Completed;
 
