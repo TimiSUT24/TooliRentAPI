@@ -25,7 +25,8 @@ namespace TooliRent.BLL.Mapper
                                  .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status.ToString()))
                                  .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
                                  .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email));
-                                 
+
+            CreateMap<Booking, ReturnToolResponseDto>().ForMember(dest => dest.IsLate, opt => opt.MapFrom(src => src.IsLate));
 
         }
     }

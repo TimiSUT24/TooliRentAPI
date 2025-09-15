@@ -29,7 +29,7 @@ namespace TooliRent.BLL.Services
             var userBookings = await _bookingRepository.FindAsync(b => b.UserId == userId && b.Status == BookingStatus.Pending || b.Status == BookingStatus.Active);
             if (userBookings.Count() >= 5)
             {
-                throw new InvalidOperationException("User cannot have more than bookings.");
+                throw new InvalidOperationException("User cannot have more than 5 bookings.");
             }
 
             var tool = await _toolRepository.GetByNameAsync(bookingRequest.ToolName);
@@ -126,7 +126,7 @@ namespace TooliRent.BLL.Services
             return true;
         }
 
-        public async Task<bool> Return(int bookingId, string userId)
+        public async Task<ReturnToolResponseDto?> Return(int bookingId, string userId)
         {
             var booking = await _bookingRepository.GetByIdAsync(bookingId, userId);
 
@@ -140,12 +140,17 @@ namespace TooliRent.BLL.Services
                 throw new InvalidOperationException("Only active bookings can be returned.");
             }
 
-            if(DateTime.Now.AddDays(1) > booking.EndDate)
+            if(DateTime.Now > booking.EndDate)
             {
                 booking.IsLate = true;
                 var daysLate = (DateTime.Now - booking.EndDate).Days;
 
                 booking.Latefee = daysLate * 10; //late fee calculation: $10 per day late
+            }
+
+            foreach(var item in booking.ToolItems)
+            {
+                item.Status = ToolStatus.Available;
             }
 
             booking.Status = BookingStatus.Completed;
@@ -155,8 +160,9 @@ namespace TooliRent.BLL.Services
                 throw new InvalidOperationException("Booking status could not be updated to Completed.");
             }
 
-            await _bookingRepository.SaveChangesAsync();
-            return true;
+            await _bookingRepository.SaveChangesAsync();         
+
+            return _mapper.Map<ReturnToolResponseDto?>(booking);
         }
     }
 }

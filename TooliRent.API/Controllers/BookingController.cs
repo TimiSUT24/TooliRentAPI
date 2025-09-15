@@ -176,11 +176,11 @@ namespace TooliRent.API.Controllers
 
                 var result = await _bookingService.Return(bookingId, userId);
 
-                if (!result)
+                if (result == null)
                 {
                     return NotFound("Booking could not be found or updated.");
                 }
-                return Ok("Tool returned successfully.");
+                return Ok(result);
             }
             catch (KeyNotFoundException ex)
             {

@@ -13,6 +13,6 @@ namespace TooliRent.BLL.Services.Interfaces
         Task<IEnumerable<BookingDetailedResponseDto?>> GetUserBookingsAsync(string userId);
         Task<bool> CancelBookingAsync(int bookingId, string userId);
         Task<bool> PickUp(int bookingId, string userId);
-        Task<bool> Return(int bookingId, string userId);
+        Task<ReturnToolResponseDto?> Return(int bookingId, string userId);
     }
 }
