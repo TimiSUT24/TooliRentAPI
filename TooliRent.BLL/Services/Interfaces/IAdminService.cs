@@ -5,5 +5,6 @@ namespace TooliRent.BLL.Services.Interfaces
     public interface IAdminService
     {
         Task<AddToolResponseDto> AddTool(AddToolRequestDto toolDto);
+        Task<AdminToolResponseDto?> GetToolByName(string toolName);
     }
 }

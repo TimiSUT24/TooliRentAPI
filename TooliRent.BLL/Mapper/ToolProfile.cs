@@ -19,7 +19,12 @@ namespace TooliRent.BLL.Mapper
             CreateMap<AddToolRequestDto, Tool>();
             CreateMap<Tool, AddToolResponseDto>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
-              
+
+            CreateMap<Tool, AdminToolResponseDto>()
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name))
+                .ForMember(dest => dest.AvailableUnits, opt => opt.MapFrom(src => src.AvailableUnits))
+                .ForMember(dest => dest.TotalQuantity, opt => opt.MapFrom(src => src.Quantity));
+
 
         }
     }

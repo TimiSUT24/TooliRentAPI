@@ -42,5 +42,30 @@ namespace TooliRent.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("tool")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetToolByName([FromQuery] string toolName)
+        {
+            try
+            {
+                var tool = await _adminService.GetToolByName(toolName);
+                if (tool == null)
+                {
+                    return NotFound($"Tool with name '{toolName}' not found.");
+                }
+                return Ok(tool);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error retrieving tool: {ex.Message}");
+            }
+        }
     }
 }
