@@ -63,9 +63,9 @@ namespace TooliRent.BLL.Services
             return _mapper.Map<BookingResponseDto?>(booking);
         }
 
-        public async Task<IEnumerable<BookingDetailedResponseDto?>> GetUserBookingsAsync(string userId)
+        public async Task<IEnumerable<BookingDetailedResponseDto?>> GetUserBookingsAsync(string userId, BookingStatus? status)
         {
-            var bookings = await _bookingRepository.GetUserBookingsAsync(userId);
+            var bookings = await _bookingRepository.GetUserBookingsAsync(userId, status);
             if (bookings == null || !bookings.Any())
             {
                 throw new KeyNotFoundException("No bookings found for the user.");

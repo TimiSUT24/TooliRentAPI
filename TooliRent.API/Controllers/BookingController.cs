@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using TooliRent.BLL.Services.Interfaces;
 using TooliRentClassLibrary.Models.DTO;
+using TooliRentClassLibrary.Models.Models;
 
 namespace TooliRent.API.Controllers
 {
@@ -59,7 +60,7 @@ namespace TooliRent.API.Controllers
         [HttpGet("user-bookings")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetUserBookings()
+        public async Task<IActionResult> GetUserBookings(BookingStatus? status)
         {
             try
             {
@@ -69,7 +70,7 @@ namespace TooliRent.API.Controllers
                     return BadRequest("User ID not found in token.");
                 }
 
-                var bookings = await _bookingService.GetUserBookingsAsync(userId);
+                var bookings = await _bookingService.GetUserBookingsAsync(userId,status);
                 if (bookings == null || !bookings.Any())
                 {
                     return NotFound("No bookings found for the user.");

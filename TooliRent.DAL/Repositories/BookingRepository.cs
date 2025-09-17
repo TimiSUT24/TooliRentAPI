@@ -42,14 +42,21 @@ namespace TooliRent.DAL.Repositories
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Booking>> GetUserBookingsAsync(string userId)
+        public async Task<IEnumerable<Booking>> GetUserBookingsAsync(string userId, BookingStatus? status)
         {
-            return await _context.Bookings
+            var query = _context.Bookings
                 .Include(b => b.ToolItems)
                 .ThenInclude(ti => ti.Tool)
                 .Include(u => u.User)
-                .Where(u => u.UserId == userId)
-                .ToListAsync();
+                .Where(u => u.UserId == userId);
+
+            if (status.HasValue)
+            {
+                query = query.Where(b => b.Status == status.Value);
+            }
+
+            return await query.ToListAsync();
+                
         }
 
 
