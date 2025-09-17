@@ -28,10 +28,12 @@ namespace TooliRent.API
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<IToolService, ToolService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
+            builder.Services.AddScoped<IAdminService, AdminService>();
 
             //AddScoped Repositories
             builder.Services.AddScoped<IToolRepository, ToolRepository>();
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
             //Get ConnectionString for db
             builder.Services.AddDbContext<TooliRentDBContext>(options =>

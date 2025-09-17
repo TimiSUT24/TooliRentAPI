@@ -16,6 +16,11 @@ namespace TooliRent.BLL.Mapper
             CreateMap<Tool, ToolResponseDto>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name)); // Place category name in the DTO
 
+            CreateMap<AddToolRequestDto, Tool>();
+            CreateMap<Tool, AddToolResponseDto>()
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+              
+
         }
     }
 }
