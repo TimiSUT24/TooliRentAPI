@@ -67,5 +67,31 @@ namespace TooliRent.API.Controllers
                 return BadRequest($"Error retrieving tool: {ex.Message}");
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("update-tools")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateTool([FromBody] UpdateToolRequestDto updateToolRequest, string toolName)
+        {
+            try
+            {
+                var updatedTool = await _adminService.UpdateTool(toolName , updateToolRequest);
+                if (!updatedTool)
+                {
+                    return NotFound($"Tool with name '{updateToolRequest.Name}' not found.");
+                }
+                return Ok(updatedTool);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error updating tool: {ex.Message}");
+            }
+        }
     }
 }

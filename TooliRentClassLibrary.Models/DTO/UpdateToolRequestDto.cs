@@ -7,12 +7,12 @@ using TooliRentClassLibrary.Models.Models;
 
 namespace TooliRentClassLibrary.Models.DTO
 {
-    public class AddToolRequestDto
-    {   
+    public class UpdateToolRequestDto
+    {
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public int CategoryId { get; set; }
-        public int Quantity { get; set; }
-        public ToolStatus Status { get; set; }
+        public int CategoryId { get; set; } = 0;
+        public int Quantity { get; set; } = 0;
+        public ToolStatus? Status { get; set; }
     }
 }

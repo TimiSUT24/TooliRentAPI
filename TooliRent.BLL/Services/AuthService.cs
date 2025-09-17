@@ -104,7 +104,7 @@ namespace TooliRent.BLL.Services
             {
                 AccessToken = newToken,
                 RefreshToken = newRefreshToken,
-                ExpiresAt = DateTime.UtcNow.AddMinutes(30) // Assuming the access token expires in 15 minutes
+                ExpiresAt = DateTime.UtcNow.AddMinutes(30) // Assuming the access token expires in 30 minutes
             };
         }
     }

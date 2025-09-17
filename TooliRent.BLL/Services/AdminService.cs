@@ -60,5 +60,41 @@ namespace TooliRent.BLL.Services
 
             return _mapper.Map<AdminToolResponseDto>(tool);
         }
+
+        public async Task<bool> UpdateTool(string toolName, UpdateToolRequestDto toolRequest)
+        {
+            var tool = await _toolRepository.GetByNameAsync(toolName);
+            if (tool == null)
+            {
+                throw new KeyNotFoundException($"Tool with name '{toolName}' not found.");
+            }
+
+            if(!string.IsNullOrEmpty(toolRequest.Name) || !string.IsNullOrEmpty(toolRequest.Name))
+            {
+                tool.Name = toolRequest.Name;
+            }
+                      
+            if(!string.IsNullOrEmpty(toolRequest.Description))
+            {
+                tool.Description = toolRequest.Description;
+            }
+            if (toolRequest.CategoryId > 0)
+            {
+                tool.CategoryId = toolRequest.CategoryId;
+            }
+           
+            if(toolRequest.Quantity > 0 && toolRequest.Status.HasValue)
+            {
+                for (int i = 0; i < toolRequest.Quantity; i++)
+                {
+                    tool.ToolItems.Add(new ToolItem { Status = (ToolStatus)toolRequest.Status, ToolId = tool.Id });
+                }
+            }          
+           
+            await _toolRepository.UpdateAsync(tool);
+            await _toolRepository.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

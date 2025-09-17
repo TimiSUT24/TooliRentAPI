@@ -24,7 +24,7 @@ namespace TooliRent.BLL.Mapper
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name))
                 .ForMember(dest => dest.AvailableUnits, opt => opt.MapFrom(src => src.AvailableUnits))
                 .ForMember(dest => dest.TotalQuantity, opt => opt.MapFrom(src => src.Quantity));
-
+            
 
         }
     }

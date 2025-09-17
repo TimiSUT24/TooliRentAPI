@@ -6,5 +6,6 @@ namespace TooliRent.BLL.Services.Interfaces
     {
         Task<AddToolResponseDto> AddTool(AddToolRequestDto toolDto);
         Task<AdminToolResponseDto?> GetToolByName(string toolName);
+        Task<bool> UpdateTool(string toolName, UpdateToolRequestDto toolRequest);
     }
 }
