@@ -27,7 +27,7 @@ namespace TooliRent.DAL.Repositories
 
         public async Task DeleteAsync(Tool entity)
         {
-            _context.Tools.Remove(entity);          
+            await Task.Run(() => _context.Tools.Remove(entity));
         }
 
         public async Task<IEnumerable<Tool>> FindAsync(Expression<Func<Tool, bool>> predicate)
@@ -52,9 +52,12 @@ namespace TooliRent.DAL.Repositories
                 .FirstOrDefaultAsync(t => t.Name == name);
         }
 
-        public Task<Tool?> GetByIdAsync(int id)
+        public async Task<Tool?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Tools
+                .Include(t => t.Category)
+                .Include(t => t.ToolItems)
+                .FirstOrDefaultAsync(t => t.Id == id);
         }
 
         public async Task<IEnumerable<Tool>> GetFilteredToolsAsync(string? categoryName = null,ToolStatus? status = null, bool? onlyAvailable = null)
@@ -88,7 +91,7 @@ namespace TooliRent.DAL.Repositories
 
         public async Task UpdateAsync(Tool entity)
         {
-            _context.Tools.Update(entity);
+            await Task.Run(() => _context.Tools.Update(entity));
         }
     }
 }
