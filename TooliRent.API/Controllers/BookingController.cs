@@ -196,5 +196,40 @@ namespace TooliRent.API.Controllers
             }
         }
 
+        [Authorize(Roles = "User")]
+        [HttpPut("pay-late-fee")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> PayLateFee([FromQuery] int bookingId, [FromQuery] decimal? amount)
+        {
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value; //Get the user id stored in the token 
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return BadRequest("User ID not found in token.");
+                }
+                var result = await _bookingService.PayLateFee(bookingId, amount, userId);
+                if (!result)
+                {
+                    return NotFound("Booking could not be found or late fee could not be paid.");
+                }
+                return Ok("Late fee paid successfully.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"An error occurred while paying the late fee: {ex.Message}");
+            }
+        }
+
     }
 }

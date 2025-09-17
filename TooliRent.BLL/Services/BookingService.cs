@@ -164,5 +164,29 @@ namespace TooliRent.BLL.Services
 
             return _mapper.Map<ReturnToolResponseDto?>(booking);
         }
+
+        public async Task<bool> PayLateFee(int bookingId, decimal? amount, string userId)
+        {
+            var booking = await _bookingRepository.GetByIdAsync(bookingId, userId);
+            if (booking == null)
+            {
+                throw new KeyNotFoundException($"Booking with ID '{bookingId}' not found for the user.");
+            }
+            if (!booking.IsLate || booking.Latefee <= 0)
+            {
+                throw new InvalidOperationException("No late fee to pay for this booking.");
+            }
+            if (amount < booking.Latefee)
+            {
+                throw new InvalidOperationException($"Insufficient amount. Late fee is {booking.Latefee}.");
+            }
+            
+            booking.Latefee = 0;
+            booking.IsLate = false;
+
+            await _bookingRepository.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

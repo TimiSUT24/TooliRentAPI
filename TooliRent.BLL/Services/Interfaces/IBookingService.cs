@@ -14,5 +14,6 @@ namespace TooliRent.BLL.Services.Interfaces
         Task<bool> CancelBookingAsync(int bookingId, string userId);
         Task<bool> PickUp(int bookingId, string userId);
         Task<ReturnToolResponseDto?> Return(int bookingId, string userId);
+        Task<bool> PayLateFee(int bookingId, decimal? amount, string userId);
     }
 }
