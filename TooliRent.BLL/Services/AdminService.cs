@@ -96,5 +96,29 @@ namespace TooliRent.BLL.Services
 
             return true;
         }
+
+        public async Task<bool> DeleteToolItem(string toolName, int toolId)
+        {
+            var tool = await _toolRepository.GetByNameAsync(toolName);
+            if (tool == null)
+            {
+                throw new KeyNotFoundException($"Tool with name '{toolName}' not found.");
+            }
+            var toolItem = tool.ToolItems.FirstOrDefault(ti => ti.Id == toolId);
+
+            if(toolItem == null)
+            {
+                throw new KeyNotFoundException($"ToolItem with Id '{toolId}' not found.");
+            }
+
+            if(toolItem.Status == ToolStatus.Borrowed)
+            {
+                throw new InvalidOperationException("Cannot delete a borrowed tool item.");
+            }    
+
+            await _toolRepository.DeleteToolItem(toolId);           
+
+            return true;
+        }
     }
 }

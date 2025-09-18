@@ -84,6 +84,20 @@ namespace TooliRent.DAL.Repositories
             return await query.ToListAsync();
         }
 
+        public async Task DeleteToolItem(int toolId)
+        {
+            var toolItem = await _context.ToolItems
+                .FirstOrDefaultAsync(ti => ti.Id == toolId);  
+            
+            if(toolItem == null)
+            {
+                throw new KeyNotFoundException($"ToolItem with ToolId '{toolId}' not found.");
+            }
+
+            _context.ToolItems.Remove(toolItem);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
