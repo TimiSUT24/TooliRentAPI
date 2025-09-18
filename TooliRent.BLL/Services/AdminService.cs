@@ -142,5 +142,28 @@ namespace TooliRent.BLL.Services
             return true;
 
         }
+
+        public async Task AddCategory(string categoryName)
+        {
+            var category = new Category
+            {
+                Name = categoryName
+            };
+
+            await _categoryRepository.AddAsync(category);
+            await _categoryRepository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<CategoryResponseDto?>> GetCategories()
+        {
+            var categories = await _categoryRepository.GetAllAsync();
+            
+            if (categories == null || !categories.Any())
+            {
+                throw new KeyNotFoundException("No categories found.");
+            }
+
+            return _mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
+        }
     }
 }

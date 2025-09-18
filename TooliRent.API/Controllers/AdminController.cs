@@ -153,5 +153,48 @@ namespace TooliRent.API.Controllers
                 return BadRequest($"Error deleting tool: {ex.Message}");
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("create-category")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> AddCategory(string categoryName)
+        {
+            try
+            {
+                 await _adminService.AddCategory(categoryName);
+             
+                 return Ok($"Category '{categoryName}' was successfully created.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error creating category: {ex.Message}");
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("categories")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetCategories()
+        {
+            try
+            {
+                var categories = await _adminService.GetCategories();
+                if (categories == null)
+                {
+                    return NotFound("No categories found.");
+                }
+                return Ok(categories);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error retrieving categories: {ex.Message}");
+            }
+        }
     }
 }

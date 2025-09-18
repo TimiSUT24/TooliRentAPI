@@ -42,7 +42,7 @@ namespace TooliRent.API
             builder.Services.AddAutoMapper(cfg =>
             {
                 // optional: additional configuration here
-            }, typeof(RegisterProfile), typeof(ToolProfile), typeof(BookingProfile), typeof(LoginProfile));
+            }, typeof(RegisterProfile), typeof(ToolProfile), typeof(BookingProfile), typeof(LoginProfile), typeof(CategoryProfile));
 
             // Add FluentValidation 
             builder.Services.AddValidatorsFromAssemblyContaining<BookingRequestDtoValidator>();            
