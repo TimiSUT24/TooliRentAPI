@@ -31,7 +31,7 @@ namespace TooliRent.API.Controllers
                 {
                     return BadRequest("Failed to add tool.");
                 }
-                return Ok($"Added tool {result.Name} " + result);
+                return Ok(result);
             }
             catch (KeyNotFoundException ex)
             {
@@ -108,7 +108,7 @@ namespace TooliRent.API.Controllers
                 {
                     return NotFound($"Tool item with id '{toolId}' not found.");
                 }
-                return Ok("Tool item was successfully deleted.");
+                return Ok($"Tool item was successfully deleted with toolId {toolId} ");
             }
             catch (KeyNotFoundException ex)
             {
@@ -121,6 +121,36 @@ namespace TooliRent.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"Error deleting tool item: {ex.Message}");
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("delete-tool")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteTool(string toolName)
+        {
+            try
+            {
+                var result = await _adminService.DeleteTool(toolName);
+                if (!result)
+                {
+                    return NotFound($"Tool with name '{toolName}' not found.");
+                }
+                return Ok($"{toolName} tool was successfully deleted.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error deleting tool: {ex.Message}");
             }
         }
     }

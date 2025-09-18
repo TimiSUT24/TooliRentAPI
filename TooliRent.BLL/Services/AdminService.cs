@@ -120,5 +120,27 @@ namespace TooliRent.BLL.Services
 
             return true;
         }
+
+        public async Task<bool> DeleteTool(string toolName)
+        {
+            var tool = await _toolRepository.GetByNameAsync(toolName);
+
+            if (tool == null)
+            {
+                throw new KeyNotFoundException($"Tool with name '{toolName}' not found.");
+            }
+
+            var activeBookings = await _bookingRepository.FindAsync(b => b.ToolItems.Any(ti => ti.ToolId == tool.Id) && (b.Status == BookingStatus.Active || b.Status == BookingStatus.Pending));
+            if (activeBookings.Any())
+            {
+                throw new InvalidOperationException("Cannot delete tool with active or pending bookings.");
+            }
+
+            await _toolRepository.DeleteAsync(tool);
+            await _toolRepository.SaveChangesAsync();
+
+            return true;
+
+        }
     }
 }

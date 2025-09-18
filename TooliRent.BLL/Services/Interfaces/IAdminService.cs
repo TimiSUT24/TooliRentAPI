@@ -8,5 +8,6 @@ namespace TooliRent.BLL.Services.Interfaces
         Task<AdminToolResponseDto?> GetToolByName(string toolName);
         Task<bool> UpdateTool(string toolName, UpdateToolRequestDto toolRequest);
         Task<bool> DeleteToolItem(string toolName, int toolId);
+        Task<bool> DeleteTool(string toolName); 
     }
 }
