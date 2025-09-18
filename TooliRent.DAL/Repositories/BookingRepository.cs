@@ -42,6 +42,22 @@ namespace TooliRent.DAL.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<(Tool Tool, int count)>> GetToolUsage()
+        {
+            var bookings = await _context.Bookings
+                .Where(b => b.Status == BookingStatus.Completed)
+                .Include(b => b.ToolItems)
+                .ThenInclude(ti => ti.Tool)               
+                .ToListAsync();
+
+            return bookings
+                .SelectMany(b => b.ToolItems)
+                .GroupBy(ti => ti.Tool)
+                .Select(g => (Tool: g.Key, g.Count()))
+                .OrderByDescending(tc => tc.Item2)                
+                .ToList();
+        }    
+
         public async Task<IEnumerable<Booking>> GetUserBookingsAsync(string userId, BookingStatus? status)
         {
             var query = _context.Bookings

@@ -255,5 +255,28 @@ namespace TooliRent.BLL.Services
 
             return _mapper.Map<LockoutUserResponse>(user);
         }
+
+        public async Task<IEnumerable<ToolUsageDto>> ToolUsage()
+        {                 
+             var tools = await _bookingRepository.GetToolUsage();
+
+             if (tools == null || !tools.Any())
+             {
+                throw new KeyNotFoundException("No popular tools found.");
+             }
+
+             return _mapper.Map<IEnumerable<ToolUsageDto>>(tools);
+                          
+        }
+
+        public async Task<BorrowedToolResponseDto> GetBoorowedTools()
+        {
+            var bookings = await _toolRepository.GetBorrowedTools();
+            if (bookings <= 0)
+            {
+                throw new KeyNotFoundException("No borrowed tools found.");
+            }
+            return _mapper.Map<BorrowedToolResponseDto>(bookings);
+        }
     }
 }

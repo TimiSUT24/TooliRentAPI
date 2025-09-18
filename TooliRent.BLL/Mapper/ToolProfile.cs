@@ -24,7 +24,14 @@ namespace TooliRent.BLL.Mapper
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name))
                 .ForMember(dest => dest.AvailableUnits, opt => opt.MapFrom(src => src.AvailableUnits))
                 .ForMember(dest => dest.TotalQuantity, opt => opt.MapFrom(src => src.Quantity));
-            
+
+            CreateMap<(Tool tool, int count), ToolUsageDto>()
+                .ForMember(dest => dest.ToolId, opt => opt.MapFrom(src => src.tool.Id))
+                .ForMember(dest => dest.ToolName, opt => opt.MapFrom(src => src.tool.Name))
+                .ForMember(dest => dest.TimesBooked, opt => opt.MapFrom(src => src.count));
+
+            CreateMap<int, BorrowedToolResponseDto>()
+                .ForMember(dest => dest.BorrowedToolCount, opt => opt.MapFrom(src => src));
 
         }
     }

@@ -6,5 +6,6 @@ namespace TooliRent.DAL.Repositories.Interfaces
     {
         Task<IEnumerable<Booking>> GetUserBookingsAsync(string userId, BookingStatus? status);
         Task<Booking?> GetByIdAsync(int id, string userId);
+        Task<IEnumerable<(Tool Tool, int count)>> GetToolUsage();   
     }
 }

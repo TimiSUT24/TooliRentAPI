@@ -60,6 +60,11 @@ namespace TooliRent.DAL.Repositories
                 .FirstOrDefaultAsync(t => t.Id == id);
         }
 
+        public async Task<int> GetBorrowedTools()
+        {
+            return await _context.ToolItems.CountAsync(ti => ti.Status == ToolStatus.Borrowed);
+        }
+
         public async Task<IEnumerable<Tool>> GetFilteredToolsAsync(string? categoryName = null,ToolStatus? status = null, bool? onlyAvailable = null)
         {
             IQueryable<Tool> query = _context.Tools

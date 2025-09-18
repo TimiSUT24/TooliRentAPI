@@ -28,6 +28,8 @@ namespace TooliRent.BLL.Mapper
 
             CreateMap<Booking, ReturnToolResponseDto>().ForMember(dest => dest.IsLate, opt => opt.MapFrom(src => src.IsLate));
 
+            
+
         }
     }
 }

@@ -282,5 +282,49 @@ namespace TooliRent.API.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet("statistics-popular-tools")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ToolUsage()
+        {
+            try
+            {
+                var stats = await _adminService.ToolUsage();
+                if(stats == null)
+                {
+                    return BadRequest("No statistics available.");
+                }
+                return Ok(stats);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error retrieving statistics: {ex.Message}");
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("statistics-borrowed-tools")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetBorrowedTools()
+        {
+            try
+            {
+                var count = await _adminService.GetBoorowedTools();
+               
+
+                return Ok(count);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error retrieving borrowed tools count: {ex.Message}");
+            }
+        }
     }
 }

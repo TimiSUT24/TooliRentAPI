@@ -6,5 +6,6 @@ namespace TooliRent.DAL.Repositories.Interfaces
     {
         Task<IEnumerable<Tool>> GetFilteredToolsAsync(string? categoryName = null, ToolStatus? status = null, bool? onlyAvailable = null);
         Task DeleteToolItem(int toolId);
+        Task<int> GetBorrowedTools();
     }
 }
