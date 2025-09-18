@@ -165,5 +165,40 @@ namespace TooliRent.BLL.Services
 
             return _mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
         }
+
+        public async Task<bool> UpdateCategory(string categoryName, string newCategoryName)
+        {
+            var category = await _categoryRepository.GetByNameAsync(categoryName);
+            if (category == null)
+            {
+                throw new KeyNotFoundException($"Category with name '{categoryName}' not found.");
+            }
+
+            category.Name = newCategoryName;
+
+            await _categoryRepository.UpdateAsync(category);
+            await _categoryRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeleteCategory(string categoryName)
+        {
+            var category = await _categoryRepository.GetByNameAsync(categoryName);
+            if (category == null)
+            {
+                throw new KeyNotFoundException($"Category with name '{categoryName}' not found.");
+            }
+            var toolsInCategory = await _toolRepository.FindAsync(t => t.CategoryId == category.Id);
+            if (toolsInCategory.Any())
+            {
+                throw new InvalidOperationException("Cannot delete category with associated tools.");
+            }
+
+            await _categoryRepository.DeleteAsync(category);
+            await _categoryRepository.SaveChangesAsync();
+
+            return true;
+        }
     }
 }

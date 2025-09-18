@@ -196,5 +196,56 @@ namespace TooliRent.API.Controllers
                 return BadRequest($"Error retrieving categories: {ex.Message}");
             }
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("update-category")]
+        [ProducesResponseType(statusCode: 200)]
+        [ProducesResponseType(statusCode: 404)]
+        public async Task<IActionResult> UpdateCategory(string categoryName, string newCategoryName)
+        {
+            try
+            {
+                var result = await _adminService.UpdateCategory(categoryName, newCategoryName);
+                if (!result)
+                {
+                    return NotFound($"Category with name '{categoryName}' not found.");
+                }
+                return Ok($"Category '{categoryName}' was successfully updated to '{newCategoryName}'.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error updating category: {ex.Message}");
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("delete-category")]
+        [ProducesResponseType(statusCode: 200)]
+        [ProducesResponseType(statusCode: 404)]
+        public async Task<IActionResult> DeleteCategory(string categoryName)
+        {
+            try
+            {
+                var result = await _adminService.DeleteCategory(categoryName);
+                if (!result)
+                {
+                    return NotFound($"Category with name '{categoryName}' not found.");
+                }
+                return Ok($"Category '{categoryName}' was successfully deleted.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error deleting category: {ex.Message}");
+            }
+        }
+
     }
 }
