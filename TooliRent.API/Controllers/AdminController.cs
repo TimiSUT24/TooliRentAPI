@@ -283,7 +283,7 @@ namespace TooliRent.API.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        [HttpGet("statistics-popular-tools")]
+        [HttpGet("statistics-usage-tools")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> ToolUsage()
