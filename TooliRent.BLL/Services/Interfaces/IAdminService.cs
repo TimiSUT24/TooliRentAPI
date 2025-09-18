@@ -9,9 +9,10 @@ namespace TooliRent.BLL.Services.Interfaces
         Task<bool> UpdateTool(string toolName, UpdateToolRequestDto toolRequest);
         Task<bool> DeleteToolItem(string toolName, int toolId);
         Task<bool> DeleteTool(string toolName); 
-        Task AddCategory(string categoryName);
+        Task<bool> AddCategory(string categoryName);
         Task<IEnumerable<CategoryResponseDto?>> GetCategories();
         Task<bool> UpdateCategory(string categoryName, string newCategoryName);
         Task<bool> DeleteCategory(string categoryName);
+        Task<LockoutUserResponse> InactivateUser(string userEmail, bool inactivate);
     }
 }

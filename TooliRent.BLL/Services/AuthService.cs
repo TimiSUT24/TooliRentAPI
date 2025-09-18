@@ -60,6 +60,11 @@ namespace TooliRent.BLL.Services
                 throw new UnauthorizedAccessException("Invalid email or password");
             }
 
+            if(user.LockoutEnd != null && user.LockoutEnd > DateTime.UtcNow && user.LockoutEnabled == true)
+            {
+                throw new UnauthorizedAccessException("User account is locked. Please try again later.");
+            }
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDtoRequest.Password, false);
 
             if (!result.Succeeded)

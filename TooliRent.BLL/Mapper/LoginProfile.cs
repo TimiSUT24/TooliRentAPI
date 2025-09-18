@@ -15,6 +15,8 @@ namespace TooliRent.BLL.Mapper
         {
             CreateMap<ApplicationUser, LoginDtoRespond>().ForMember(dest => dest.Token, opt => opt.Ignore())
                                                          .ForMember(dest => dest.RefreshToken, opt => opt.Ignore());
+
+            CreateMap<ApplicationUser, LockoutUserResponse>();
         }
        
     }

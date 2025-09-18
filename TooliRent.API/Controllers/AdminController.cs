@@ -162,7 +162,12 @@ namespace TooliRent.API.Controllers
         {
             try
             {
-                 await _adminService.AddCategory(categoryName);
+                 var result = await _adminService.AddCategory(categoryName);
+
+                if (!result)
+                {
+                    return BadRequest("Failed to add category.");
+                }
              
                  return Ok($"Category '{categoryName}' was successfully created.");
             }
@@ -244,6 +249,36 @@ namespace TooliRent.API.Controllers
             catch (Exception ex)
             {
                 return BadRequest($"Error deleting category: {ex.Message}");
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("inactivate/reactivate-user")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> InactivateUser(string userEmail, bool inactivate)
+        {
+            try
+            {
+                var result = await _adminService.InactivateUser(userEmail, inactivate);
+                if (result == null)
+                {
+                    return NotFound($"User with email '{userEmail}' not found.");
+                }
+                return Ok(result);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error inactivating user: {ex.Message}");
             }
         }
 

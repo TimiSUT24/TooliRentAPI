@@ -143,7 +143,7 @@ namespace TooliRent.BLL.Services
 
         }
 
-        public async Task AddCategory(string categoryName)
+        public async Task<bool> AddCategory(string categoryName)
         {
             var category = new Category
             {
@@ -152,6 +152,7 @@ namespace TooliRent.BLL.Services
 
             await _categoryRepository.AddAsync(category);
             await _categoryRepository.SaveChangesAsync();
+            return true;
         }
 
         public async Task<IEnumerable<CategoryResponseDto?>> GetCategories()
@@ -199,6 +200,60 @@ namespace TooliRent.BLL.Services
             await _categoryRepository.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<LockoutUserResponse> InactivateUser(string userEmail, bool inactivate)
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null)
+            {
+                throw new KeyNotFoundException($"User with email '{userEmail}' not found.");
+            }
+
+            if(inactivate == true)
+            {
+                if (user.LockoutEnd != null && user.LockoutEnd > DateTimeOffset.Now)
+                {
+                    throw new InvalidOperationException("User is already inactive.");
+                }
+
+                user.LockoutEnabled = true;
+                user.LockoutEnd = DateTimeOffset.Now.AddYears(1);
+
+                await _userManager.UpdateSecurityStampAsync(user);
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    throw new Exception("Failed to inactivate user.");
+                }
+            }
+
+            if(inactivate == false)
+            {
+                if(user.LockoutEnd == null || user.LockoutEnd <= DateTimeOffset.Now)
+                {
+                    throw new InvalidOperationException("User is already active.");
+                }
+                user.LockoutEnabled = false;
+                user.LockoutEnd = null;
+                
+                var result = await _userManager.UpdateAsync(user);
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception("Failed to activate user.");
+                }
+
+                var map = new LockoutUserResponse
+                {
+                    Message = "User activated successfully",
+                    Email = user.Email!,
+                };
+
+                return _mapper.Map<LockoutUserResponse>(map);
+            }
+
+            return _mapper.Map<LockoutUserResponse>(user);
         }
     }
 }
