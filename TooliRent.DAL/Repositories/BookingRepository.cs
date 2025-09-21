@@ -37,7 +37,7 @@ namespace TooliRent.DAL.Repositories
         {
             return await _context.Bookings
                 .Include(b => b.ToolItems)
-                .ThenInclude(ti => ti.Tool) //WIP
+                .ThenInclude(ti => ti.Tool)
                 .Include(u => u.User)               
                 .ToListAsync();
         }
