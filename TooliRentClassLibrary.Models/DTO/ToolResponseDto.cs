@@ -1,4 +1,7 @@
-﻿namespace TooliRentClassLibrary.Models.DTO
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
+
+namespace TooliRentClassLibrary.Models.DTO
 {
     public class ToolResponseDto
     {
@@ -6,7 +9,9 @@
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
-        public int AvailableUnits { get; set; }
-
+        public int? AvailableUnits { get; set; }      
+        public int? BorrowedUnits { get; set; }
+        public int? MaintenanceUnits { get; set; }
+        public int? RetiredUnits { get; set; }
     }
 }

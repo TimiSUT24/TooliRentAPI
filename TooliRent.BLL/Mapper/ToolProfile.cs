@@ -14,7 +14,11 @@ namespace TooliRent.BLL.Mapper
         public ToolProfile()
         {
             CreateMap<Tool, ToolResponseDto>()
-                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name)); // Place category name in the DTO
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name)) // Place category name in the DTO
+                .ForMember(dest => dest.AvailableUnits, opt => opt.MapFrom(src => src.AvailableUnits))
+                .ForMember(dest => dest.BorrowedUnits, opt => opt.MapFrom(src => src.ToolItems.Count(s => s.Status == ToolStatus.Borrowed)))
+                .ForMember(dest => dest.MaintenanceUnits, opt => opt.MapFrom(src => src.ToolItems.Count(s => s.Status == ToolStatus.Maintenance)))
+                .ForMember(dest => dest.RetiredUnits, opt => opt.MapFrom(src => src.ToolItems.Count(s => s.Status == ToolStatus.Retired)));
 
             CreateMap<AddToolRequestDto, Tool>();
             CreateMap<Tool, AddToolResponseDto>()

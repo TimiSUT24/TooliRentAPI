@@ -48,7 +48,7 @@ namespace TooliRent.BLL.Services
         public async Task<IEnumerable<ToolResponseDto?>> GetFilteredToolsAsync(string? categoryName = null, ToolStatus? status = null, bool onlyavailable = false)
         {
             var tool = await _toolRepository.GetFilteredToolsAsync(categoryName, status, onlyavailable);
-
+            
             if (tool == null)
             {
                 throw new KeyNotFoundException("tool were not found");
