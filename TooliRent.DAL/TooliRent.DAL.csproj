@@ -24,7 +24,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TooliRentClassLibrary.Models\TooliRentClassLibrary.Models.csproj" />
-    <ProjectReference Include="..\TooliRentClassLibrary\TooliRentClassLibrary.Models.csproj" />
   </ItemGroup>
 
 </Project>
