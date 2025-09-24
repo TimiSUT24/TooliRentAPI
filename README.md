@@ -112,6 +112,14 @@ The TooliRent API uses an **N-tier architecture** with clear separation:
 
 ---
 
+## How to Run 
+OBS! Make sure to have SSMS installed for SQL
+1. Clone repository in github choose option open with visual studio (recommended)
+3. In visual studio make sure startup project is set at TooliRent.API can be found at Project --> Configure startup projects
+4. Go to Build and choose Rebuild solution to make sure no errors accure
+5. Go to View --> Other Windows and select Package Manager in Package Manager copy this and paste Update-Database -Project TooliRent.DAL -StartupProject TooliRent.API
+6. Start program
+
 
 
 
