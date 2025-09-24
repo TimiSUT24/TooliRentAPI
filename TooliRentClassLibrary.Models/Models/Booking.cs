@@ -13,7 +13,7 @@ namespace TooliRentClassLibrary.Models.Models
         public BookingStatus Status { get; set; } = BookingStatus.Pending;
 
         public bool IsLate { get; set; } = false;
-        public decimal? Latefee { get; set; }
+        public decimal? Latefee { get; set; } // Should not allow null
 
     }
 
