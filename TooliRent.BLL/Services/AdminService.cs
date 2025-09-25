@@ -31,22 +31,16 @@ namespace TooliRent.BLL.Services
             {
                 throw new KeyNotFoundException($"Category '{toolDto.CategoryId}' not found.");
             }
-            var tool = new Tool
-            {
-                Name = toolDto.Name,
-                Description = toolDto.Description,
-                CategoryId = category.Id,
-                ToolItems = new List<ToolItem>()
-            };
+            var tools = _mapper.Map<Tool>(toolDto);           
 
             for (int i = 0; i < toolDto.Quantity; i++)
             {
-                tool.ToolItems.Add(new ToolItem { Status = toolDto.Status, ToolId = tool.Id });               
+                tools.ToolItems.Add(new ToolItem { Status = toolDto.Status});               
             }
-            await _toolRepository.AddAsync(tool);
+            await _toolRepository.AddAsync(tools);
             await _toolRepository.SaveChangesAsync();
 
-            return _mapper.Map<AddToolResponseDto>(tool);
+            return _mapper.Map<AddToolResponseDto>(tools);
 
         }
 
@@ -67,7 +61,7 @@ namespace TooliRent.BLL.Services
             if (tool == null)
             {
                 throw new KeyNotFoundException($"Tool with name '{toolName}' not found.");
-            }
+            }   
 
             if(!string.IsNullOrEmpty(toolRequest.Name) || !string.IsNullOrEmpty(toolRequest.Name))
             {

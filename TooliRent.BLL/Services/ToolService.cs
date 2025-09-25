@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using TooliRent.BLL.Services.Interfaces;
 using TooliRent.DAL.Repositories.Interfaces;
 using TooliRentClassLibrary.Models.DTO;
+using TooliRentClassLibrary.Models.DTO.Interfaces;
 using TooliRentClassLibrary.Models.Models;
 
 namespace TooliRent.BLL.Services
@@ -45,13 +46,28 @@ namespace TooliRent.BLL.Services
             return _mapper.Map<ToolResponseDto?>(tool);
         }
 
-        public async Task<IEnumerable<ToolResponseDto?>> GetFilteredToolsAsync(string? categoryName = null, ToolStatus? status = null, bool onlyavailable = false)
+        public async Task<IEnumerable<IToolResponseDto>> GetFilteredToolsAsync(string? categoryName = null, ToolStatus? status = null, bool onlyavailable = false)
         {
             var tool = await _toolRepository.GetFilteredToolsAsync(categoryName, status, onlyavailable);
             
             if (tool == null)
             {
                 throw new KeyNotFoundException("tool were not found");
+            }
+
+            if(status == ToolStatus.Borrowed)
+            {
+                return _mapper.Map<IEnumerable<ToolResponseBorrowedDto>>(tool);
+            }         
+
+            if(status == ToolStatus.Maintenance)
+            {
+                return _mapper.Map<IEnumerable<ToolResponseMaintenanceDto>>(tool);
+            }
+
+            if(status == ToolStatus.Retired)
+            {
+                return _mapper.Map<IEnumerable<ToolResponseRetiredDto>>(tool);
             }
 
             return _mapper.Map<IEnumerable<ToolResponseDto>>(tool);

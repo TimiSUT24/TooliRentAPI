@@ -15,10 +15,7 @@ namespace TooliRent.BLL.Mapper
         {
             CreateMap<Tool, ToolResponseDto>()
                 .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name)) // Place category name in the DTO
-                .ForMember(dest => dest.AvailableUnits, opt => opt.MapFrom(src => src.AvailableUnits))
-                .ForMember(dest => dest.BorrowedUnits, opt => opt.MapFrom(src => src.ToolItems.Count(s => s.Status == ToolStatus.Borrowed)))
-                .ForMember(dest => dest.MaintenanceUnits, opt => opt.MapFrom(src => src.ToolItems.Count(s => s.Status == ToolStatus.Maintenance)))
-                .ForMember(dest => dest.RetiredUnits, opt => opt.MapFrom(src => src.ToolItems.Count(s => s.Status == ToolStatus.Retired)));
+                .ForMember(dest => dest.AvailableUnits, opt => opt.MapFrom(src => src.AvailableUnits));
 
             CreateMap<AddToolRequestDto, Tool>();
             CreateMap<Tool, AddToolResponseDto>()
@@ -36,6 +33,19 @@ namespace TooliRent.BLL.Mapper
 
             CreateMap<int, BorrowedToolResponseDto>()
                 .ForMember(dest => dest.BorrowedToolCount, opt => opt.MapFrom(src => src));
+
+            CreateMap<Tool, ToolResponseBorrowedDto>()
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name))
+                .ForMember(dest => dest.BorrowedUnits, opt => opt.MapFrom(src => src.ToolItems.Count(s => s.Status == ToolStatus.Borrowed)));
+
+            CreateMap<Tool, ToolResponseMaintenanceDto>()
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name))
+                .ForMember(dest => dest.MaintenanceUnits, opt => opt.MapFrom(src => src.ToolItems.Count(s => s.Status == ToolStatus.Maintenance)));
+
+            CreateMap<Tool, ToolResponseRetiredDto>()
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name))
+                .ForMember(dest => dest.RetiredUnits, opt => opt.MapFrom(src => src.ToolItems.Count(s => s.Status == ToolStatus.Retired)));
+
 
         }
     }

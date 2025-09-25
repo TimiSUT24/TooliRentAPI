@@ -22,16 +22,22 @@ namespace TooliRent.API.Controllers
         [ProducesResponseType(statusCode: 201)]
         [ProducesResponseType(statusCode: 400)]
         public async Task<IActionResult> Register(RegisterDtoRequest registerDtoRequest)
-        {         
-
-            var response = await _authService.RegisterUserAsync(registerDtoRequest);
-
-            if (response == null)
+        {
+            try
             {
-                return BadRequest("Registration failed");
-            }
+                var response = await _authService.RegisterUserAsync(registerDtoRequest);
 
-            return Ok($"Welcome, {response.UserName}");
+                if (response == null)
+                {
+                    return BadRequest("Registration failed");
+                }
+
+                return Ok($"Welcome, {response.UserName}");
+            }
+            catch
+            {
+                return BadRequest("Invalid registration details");
+            }         
         }
 
         [HttpPost("login")]
@@ -55,8 +61,7 @@ namespace TooliRent.API.Controllers
                 return Unauthorized(ex.Message);
             }          
         }
-
-        [Authorize(Roles ="User")]
+        
         [HttpPost("refresh-token")]
         [ProducesResponseType(statusCode: 200)]
         [ProducesResponseType(statusCode: 401)]
