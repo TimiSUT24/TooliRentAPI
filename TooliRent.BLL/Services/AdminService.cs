@@ -175,9 +175,10 @@ namespace TooliRent.BLL.Services
                 throw new KeyNotFoundException($"Category with name '{updateCategoryRequest.CategoryName}' not found.");
             }
 
-            var addCategory = _mapper.Map<Category>(updateCategoryRequest);
-         
-            await _categoryRepository.UpdateAsync(addCategory);
+            var updateCategory = _mapper.Map<Category>(updateCategoryRequest);
+            category.Name = updateCategory.Name;
+
+            await _categoryRepository.UpdateAsync(category);
             await _categoryRepository.SaveChangesAsync();
 
             return true;
