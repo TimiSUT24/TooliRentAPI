@@ -139,6 +139,12 @@ namespace TooliRent.BLL.Services
 
         public async Task<bool> AddCategory(string categoryName)
         {
+
+            if(categoryName == null || string.IsNullOrEmpty(categoryName))
+            {
+                throw new ArgumentException("Category name cannot be null or empty.");
+            }
+
             var category = new Category
             {
                 Name = categoryName
@@ -161,17 +167,17 @@ namespace TooliRent.BLL.Services
             return _mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
         }
 
-        public async Task<bool> UpdateCategory(string categoryName, string newCategoryName)
+        public async Task<bool> UpdateCategory(UpdateCategoryRequestDto updateCategoryRequest)
         {
-            var category = await _categoryRepository.GetByNameAsync(categoryName);
+            var category = await _categoryRepository.GetByNameAsync(updateCategoryRequest.CategoryName);
             if (category == null)
             {
-                throw new KeyNotFoundException($"Category with name '{categoryName}' not found.");
+                throw new KeyNotFoundException($"Category with name '{updateCategoryRequest.CategoryName}' not found.");
             }
 
-            category.Name = newCategoryName;
-
-            await _categoryRepository.UpdateAsync(category);
+            var addCategory = _mapper.Map<Category>(updateCategoryRequest);
+         
+            await _categoryRepository.UpdateAsync(addCategory);
             await _categoryRepository.SaveChangesAsync();
 
             return true;

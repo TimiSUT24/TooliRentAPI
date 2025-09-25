@@ -171,6 +171,10 @@ namespace TooliRent.API.Controllers
              
                  return Ok($"Category '{categoryName}' was successfully created.");
             }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
             catch (Exception ex)
             {
                 return BadRequest($"Error creating category: {ex.Message}");
@@ -206,16 +210,16 @@ namespace TooliRent.API.Controllers
         [HttpPut("update-category")]
         [ProducesResponseType(statusCode: 200)]
         [ProducesResponseType(statusCode: 404)]
-        public async Task<IActionResult> UpdateCategory(string categoryName, string newCategoryName)
+        public async Task<IActionResult> UpdateCategory(UpdateCategoryRequestDto updateRequest)
         {
             try
             {
-                var result = await _adminService.UpdateCategory(categoryName, newCategoryName);
+                var result = await _adminService.UpdateCategory(updateRequest);
                 if (!result)
                 {
-                    return NotFound($"Category with name '{categoryName}' not found.");
+                    return NotFound($"Category with name '{updateRequest.CategoryName}' not found.");
                 }
-                return Ok($"Category '{categoryName}' was successfully updated to '{newCategoryName}'.");
+                return Ok($"Category '{updateRequest.CategoryName}' was successfully updated to '{updateRequest.NewCategoryName}'.");
             }
             catch (KeyNotFoundException ex)
             {

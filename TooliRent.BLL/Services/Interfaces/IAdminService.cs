@@ -11,7 +11,7 @@ namespace TooliRent.BLL.Services.Interfaces
         Task<bool> DeleteTool(string toolName); 
         Task<bool> AddCategory(string categoryName);
         Task<IEnumerable<CategoryResponseDto?>> GetCategories();
-        Task<bool> UpdateCategory(string categoryName, string newCategoryName);
+        Task<bool> UpdateCategory(UpdateCategoryRequestDto updateCategoryRequest);
         Task<bool> DeleteCategory(string categoryName);
         Task<LockoutUserResponse> InactivateUser(string userEmail, bool inactivate);
         Task<IEnumerable<ToolUsageDto>> ToolUsage();
