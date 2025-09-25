@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace TooliRentClassLibrary.Models.DTO
 {
-    public class RegisterDtoResponse
+    public class UpdateCategoryRequestDto
     {
-        public string UserName { get; set; } = null!;   
+        public string CategoryName { get; set; } = string.Empty;
+        public string NewCategoryName { get; set; } = string.Empty;
     }
 }

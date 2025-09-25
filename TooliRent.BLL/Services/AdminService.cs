@@ -31,22 +31,16 @@ namespace TooliRent.BLL.Services
             {
                 throw new KeyNotFoundException($"Category '{toolDto.CategoryId}' not found.");
             }
-            var tool = new Tool
-            {
-                Name = toolDto.Name,
-                Description = toolDto.Description,
-                CategoryId = category.Id,
-                ToolItems = new List<ToolItem>()
-            };
+            var tools = _mapper.Map<Tool>(toolDto);           
 
             for (int i = 0; i < toolDto.Quantity; i++)
             {
-                tool.ToolItems.Add(new ToolItem { Status = toolDto.Status, ToolId = tool.Id });               
+                tools.ToolItems.Add(new ToolItem { Status = toolDto.Status});               
             }
-            await _toolRepository.AddAsync(tool);
+            await _toolRepository.AddAsync(tools);
             await _toolRepository.SaveChangesAsync();
 
-            return _mapper.Map<AddToolResponseDto>(tool);
+            return _mapper.Map<AddToolResponseDto>(tools);
 
         }
 
@@ -67,7 +61,7 @@ namespace TooliRent.BLL.Services
             if (tool == null)
             {
                 throw new KeyNotFoundException($"Tool with name '{toolName}' not found.");
-            }
+            }   
 
             if(!string.IsNullOrEmpty(toolRequest.Name) || !string.IsNullOrEmpty(toolRequest.Name))
             {
@@ -145,6 +139,12 @@ namespace TooliRent.BLL.Services
 
         public async Task<bool> AddCategory(string categoryName)
         {
+
+            if(categoryName == null || string.IsNullOrEmpty(categoryName))
+            {
+                throw new ArgumentException("Category name cannot be null or empty.");
+            }
+
             var category = new Category
             {
                 Name = categoryName
@@ -167,15 +167,16 @@ namespace TooliRent.BLL.Services
             return _mapper.Map<IEnumerable<CategoryResponseDto>>(categories);
         }
 
-        public async Task<bool> UpdateCategory(string categoryName, string newCategoryName)
+        public async Task<bool> UpdateCategory(UpdateCategoryRequestDto updateCategoryRequest)
         {
-            var category = await _categoryRepository.GetByNameAsync(categoryName);
+            var category = await _categoryRepository.GetByNameAsync(updateCategoryRequest.CategoryName);
             if (category == null)
             {
-                throw new KeyNotFoundException($"Category with name '{categoryName}' not found.");
+                throw new KeyNotFoundException($"Category with name '{updateCategoryRequest.CategoryName}' not found.");
             }
 
-            category.Name = newCategoryName;
+            var updateCategory = _mapper.Map<Category>(updateCategoryRequest);
+            category.Name = updateCategory.Name;
 
             await _categoryRepository.UpdateAsync(category);
             await _categoryRepository.SaveChangesAsync();

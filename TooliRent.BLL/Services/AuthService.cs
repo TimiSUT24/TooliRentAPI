@@ -23,26 +23,13 @@ namespace TooliRent.BLL.Services
 
         public async Task<RegisterDtoResponse?> RegisterUserAsync(RegisterDtoRequest registerDtoRequest)
         {
-            var CreateUser = new ApplicationUser
-            {
-                UserName = registerDtoRequest.UserName,
-                Email = registerDtoRequest.Email,
-                PhoneNumber = registerDtoRequest.PhoneNumber,
-            };
-           
-            //Create user
-            var result = await _userManager.CreateAsync(CreateUser, registerDtoRequest.Password);
+            var user = _mapper.Map<ApplicationUser>(registerDtoRequest);           
+             //Create user
+             var result = await _userManager.CreateAsync(user, registerDtoRequest.Password);
 
             if(result == null || !result.Succeeded)
             {
                 throw new Exception("Registration failed");
-            }
-
-            var user = await _userManager.FindByEmailAsync(registerDtoRequest.Email);
-
-            if(user == null)
-            {
-                throw new Exception("User not found after registration");
             }
 
             //Assign role to user 
@@ -102,15 +89,14 @@ namespace TooliRent.BLL.Services
             var newToken = _jwt.GenerateToken(user.Id, roles);
             var newRefreshToken = Guid.NewGuid().ToString("N"); // Generate a new refresh token
             user.RefreshToken = newRefreshToken;
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); // Set new refresh token expiry time
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7); // Set new refresh token expiry time            
             await _userManager.UpdateAsync(user); // Update user with new refresh token
 
-            return new TokenRefreshResponseDto
-            {
-                AccessToken = newToken,
-                RefreshToken = newRefreshToken,
-                ExpiresAt = DateTime.UtcNow.AddMinutes(30) // Assuming the access token expires in 30 minutes
-            };
+            var response = _mapper.Map<TokenRefreshResponseDto>(user);
+            response.AccessToken = newToken;
+
+            return response;
+            
         }
     }
 }

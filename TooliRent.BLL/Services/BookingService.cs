@@ -48,6 +48,7 @@ namespace TooliRent.BLL.Services
 
             availableItem.Status = ToolStatus.Borrowed;
 
+
             var booking = new Booking
             {          
                 UserId = userId,
